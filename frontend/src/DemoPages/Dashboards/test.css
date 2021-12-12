@@ -1,0 +1,10 @@
+.app-theme-white.app-container {
+    background: #f1f4f6;
+}
+
+
+.table td{
+    padding: 1.55rem;
+    vertical-align: middle;
+}
+

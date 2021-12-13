@@ -1,0 +1,18 @@
+@startuml
+
+header 리소스(mesos) 모니터링 페이지
+
+actor User
+participant Web
+participant Grafana
+database InfluxDB
+participant Mesos
+
+User -> Web : 로그인
+User -> Web : 리소스 페이지 클릭
+Grafana --> Web : 임베딩 그라파나
+Web -> User : 리소스 페이지 출력
+Grafana -> InfluxDB : 주기적 데이터 요청
+InfluxDB --> Grafana : 주기적 데이터 전달
+Mesos -> InfluxDB : 메소스 리소스 저장
+@enduml

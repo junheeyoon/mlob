@@ -1,0 +1,161 @@
+@startuml
+scale 2/3
+top to bottom direction
+
+namespace domain.hadoopCore.service {
+    interface HdfsCoreService
+    class HdfsCoreServiceImpl
+
+    HdfsCoreServiceImpl <|.. HdfsCoreService
+}
+
+namespace domain.mesosStatCore.service {
+    interface MesosCoreService
+    class MesosCoreServiceImpl
+
+    MesosCoreServiceImpl <|.. MesosCoreService
+}
+
+namespace domain.schedulerCore.repository {
+    interface AgentRepository
+    interface ScheduleLogRepository
+    interface ScheduleRepository
+    interface ScheduleRunningRepository
+}
+
+namespace domain.schedulerCore.service {
+    interface AgentService
+    interface ScheduleLogService
+    interface ScheduleService
+    interface ScheduleRunningService
+    class AgentServiceImpl
+    class ScheduleLogServiceImpl
+    class ScheduleServiceImpl
+    class ScheduleRunningServiceImpl
+
+    AgentServiceImpl <|.. AgentService
+    ScheduleLogServiceImpl <|.. ScheduleLogService
+    ScheduleServiceImpl <|.. ScheduleService
+    ScheduleRunningServiceImpl <|.. ScheduleRunningService
+
+    AgentServiceImpl <.down. domain.schedulerCore.repository.AgentRepository
+    ScheduleLogServiceImpl <.down. domain.schedulerCore.repository.ScheduleLogRepository
+    ScheduleServiceImpl <.down. domain.schedulerCore.repository.ScheduleRepository
+    ScheduleRunningServiceImpl <.down. domain.schedulerCore.repository.ScheduleRunningRepository
+}
+
+namespace domain.securityCore.repository {
+    interface MemberRepository
+    interface RoleRepository
+}
+
+namespace domain.securityCore.service {
+    interface MemberService
+    interface RoleService
+    class MemberServiceImpl
+    class RoleServiceImpl
+
+    MemberServiceImpl <|.. MemberService
+    RoleServiceImpl <|.. RoleService
+
+    MemberServiceImpl <.down. domain.securityCore.repository.MemberRepository
+    RoleServiceImpl <.down. domain.securityCore.repository.RoleRepository
+}
+
+namespace service.hadoopService {
+    class HdfsFileSystemConfigure
+    class HdfsFileSystemController
+    class HdfsStateCollector
+
+    HdfsFileSystemController <-- HdfsFileSystemConfigure
+    HdfsStateCollector <.down. domain.hadoopCore.service.HdfsCoreService
+}
+
+namespace service.mesosService {
+    class MesosStateCollector
+
+    MesosStateCollector <.down. domain.mesosStatCore.service.MesosCoreService
+}
+
+namespace service.securityService {
+    class MemberManager
+
+    MemberManager <.down. domain.securityCore.service.MemberService
+    MemberManager <.down. domain.securityCore.service.RoleService
+}
+
+namespace service.schedulerService.domain {
+    interface JobPublisher
+    Class JobIssued
+    Class CronJob
+    Class ServiceJob
+}
+
+namespace service.schedulerService.service {
+    interface JobSchedulerService
+    class JobSchedulerServiceImpl
+    class JobUtil
+
+    JobSchedulerServiceImpl <|.. JobSchedulerService
+    JobSchedulerServiceImpl <.. service.schedulerService.domain
+    JobSchedulerServiceImpl <.. domain.schedulerCore.service.ScheduleService
+     JobSchedulerServiceImpl <.down. JobUtil
+}
+
+
+namespace webServer.webserver.scheduler {
+    class HdfsStateScheduler
+    class MesosStateScheduler
+    class TaskScheduler
+
+    HdfsStateScheduler <.down. service.hadoopService.HdfsStateCollector
+    MesosStateScheduler <.down. service.mesosService.MesosStateCollector
+    TaskScheduler <.down. service.schedulerService.service.JobSchedulerService
+}
+
+namespace webServer.webserver.controller {
+    class AdminController
+    class HDFSController
+    class HostController
+    class IndexController
+    class LoginController
+    class MainController
+    class MesosController
+    class ScheduleController
+    class SignupController
+
+    AdminController <.. service.securityService.MemberManager
+    HDFSController <.. webServer.webserver.service.HDFSBrowserService
+    ScheduleController <.down. webServer.webserver.service.ScheduleRunService
+    ScheduleController <.down. domain.schedulerCore.service.AgentService
+    SignupController <.down. service.securityService.MemberManager
+}
+
+
+namespace webServer.webserver.security {
+    class MemberDetailsService
+    class SecurityConfig
+
+    MemberDetailsService <.. domain.securityCore.service.MemberService
+    SecurityConfig <.. MemberDetailsService
+}
+
+namespace webServer.webserver.service {
+    interface HDFSBrowserService
+    class HDFSBrowserServiceImpl
+    interface JobEventListener
+    class JobEventListenerImpl
+    class JobPublisherEvent
+    interface ScheduleRunService
+    class ScheduleRunServiceImpl
+
+    HDFSBrowserServiceImpl <|.. HDFSBrowserService
+    HDFSBrowserServiceImpl <.down. service.hadoopService.HdfsFileSystemController
+    JobEventListenerImpl <|.. JobEventListener
+    JobPublisherEvent <.down. service.schedulerService.domain.JobPublisher
+    ScheduleRunServiceImpl <|.. ScheduleRunService
+    ScheduleRunServiceImpl <.down. domain.schedulerCore.service.ScheduleService
+    ScheduleRunServiceImpl <.down. domain.schedulerCore.service.ScheduleRunningService
+}
+
+@enduml

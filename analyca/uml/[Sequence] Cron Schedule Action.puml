@@ -1,0 +1,21 @@
+@startuml
+
+header crontab 스케쥴러 실행 프로세스
+
+participant scheduleService
+database scheduleListDB
+database scheduleLogDB
+database scheduleRunningDB
+participant scheduleController
+participant agent
+
+scheduleService -> scheduleListDB : cron 스케쥴 조회
+scheduleListDB --> scheduleService : 스케쥴에 해당하는 목록 전달
+scheduleService -> scheduleController : 스케쥴 실행 API 호출
+scheduleController -> scheduleLogDB : 스케쥴 로그 삽입
+scheduleController -> agent : (WebSocket) 스케쥴 실행 커맨드 전달
+agent -> agent : 스케쥴 실행 (파일 실행)
+agent --> scheduleController : 실행 프로세스 PID 전달
+scheduleController -> scheduleRunningDB : 실행 프로세스 PID 저장
+
+@enduml

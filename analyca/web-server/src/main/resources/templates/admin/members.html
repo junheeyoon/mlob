@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+<title>BIGDATA USERVICE</title>
+
+<section>
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">회원 관리</h2>
+                        <!--                            <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>-->
+                        <!--                            <div class="page-breadcrumb">-->
+                        <!--                                <nav aria-label="breadcrumb">-->
+                        <!--                                    <ol class="breadcrumb">-->
+                        <!--                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>-->
+                        <!--                                        <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Tables</a></li>-->
+                        <!--                                        <li class="breadcrumb-item active" aria-current="page">Data Tables</li>-->
+                        <!--                                    </ol>-->
+                        <!--                                </nav>-->
+                        <!--                            </div>-->
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="modal fade addNewInputs" id="modalAdd" tabindex="-1" role="dialog"
+                     aria-labelledby="modalAdd"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold text-primary ml-5">Add new form</h4>
+                                <button type="button" class="close text-primary" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-5">
+                                    <input type="text" id="inputName" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="inputName">Name</label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="text" id="inputPosition" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="inputPosition">Position</label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="text" id="inputOfficeInput" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="inputOfficeInput">Office</label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="text" id="inputAge" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="inputAge">Age</label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="date" id="inputDate" class="form-control" placeholder="Select Date">
+                                    <label data-error="wrong" data-success="right" for="inputDate"></label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="text" id="inputSalary" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="inputSalary">Salary</label>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center buttonAddFormWrapper">
+                                <button class="btn btn-outline-primary btn-block buttonAdd" data-dismiss="modal">Add
+                                    form
+                                    <i class="fas fa-paper-plane-o ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade modalEditClass" id="modalEdit" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold text-secondary ml-5">Edit form</h4>
+                                <button type="button" class="close text-secondary" data-dismiss="modal"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="md-form mb-5">
+                                    <input type="text" id="formNameEdit" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="formNameEdit" class="active">Name</label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="text" id="formPositionEdit" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="formPositionEdit"
+                                           class="active">Position</label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="text" id="formOfficeEdit" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="formOfficeEdit" class="active">Office</label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="text" id="formAgeEdit" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="formAgeEdit"
+                                           class="active">Age</label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="text" id="formDateEdit" class="form-control datepicker">
+                                    <label data-error="wrong" data-success="right" for="formDateEdit" class="active">Date</label>
+                                </div>
+
+                                <div class="md-form mb-5">
+                                    <input type="text" id="formSalaryEdit" class="form-control validate">
+                                    <label data-error="wrong" data-success="right" for="formSalaryEdit" class="active">Salary</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center editInsideWrapper">
+                                <button class="btn btn-outline-secondary btn-block editInside waves-effect waves-light"
+                                        data-dismiss="modal">Edit
+                                    form
+                                    <i class="fas fa-paper-plane-o ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelete"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100 font-weight-bold ml-5 text-danger">Delete</h4>
+                                <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <p class="text-center h4">Are you sure to delete selected row?</p>
+
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center deleteButtonsWrapper">
+                                <button type="button" class="btn btn-danger btnYesClass waves-effect waves-light"
+                                        id="btnYes" data-dismiss="modal">Yes
+                                </button>
+                                <button type="button" class="btn btn-primary btnNoClass waves-effect waves-light"
+                                        id="btnNo" data-dismiss="modal">No
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- basic table  -->
+                <!-- ============================================================== -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">
+                            Basic Table
+                            <!--                                <small class="float-sm-right">-->
+                            <!--                                    <a href="" class="btn btn-info btn-rounded btn-sm" data-toggle="modal" data-target="#modalAdd">Add<i-->
+                            <!--                                            class="fas fa-plus-square ml-1"></i></a>-->
+                            <!--                                    <button class="btn btn-info btn-rounded btn-sm buttonEdit waves-effect waves-light" data-toggle="modal"-->
+                            <!--                                            data-target="#modalEdit" disabled="">Edit<i class="fas fa-pencil-square-o ml-1"></i>-->
+                            <!--                                    </button>-->
+                            <!--                                    <button class="btn btn-danger btn-sm btn-rounded buttonDelete waves-effect waves-light" data-toggle="modal"-->
+                            <!--                                            disabled="" data-target="#modalDelete">Delete<i class="fas fa-times ml-1"></i>-->
+                            <!--                                    </button>-->
+                            <!--                                </small>-->
+                        </h5>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered first"
+                                       data-toggle="table"
+                                       data-search="true"
+                                       data-show-columns="true">
+                                    <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="member : ${members}">
+                                        <td contenteditable="true" th:text="${member.getUsername()}"></td>
+                                        <td th:text="${member.getPassword()}"></td>
+                                        <td th:text="${member.getRole()}"></td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end basic table  -->
+                <!-- ============================================================== -->
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">
+                            JSGrid Member Table
+                        </h5>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <div id="membersTable">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div th:replace="fragments/footer :: footer"/>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+</section>
+<optional>
+    <!--        <link rel="stylesheet" href="assets/vendor/bootstrap-table/bootstrap-table.min.css" th:href="@{/assets/vendor/bootstrap-table/bootstrap-table.min.css}">-->
+    <!--x-editable-->
+    <!--        <script src="extensions/editable/bootstrap-table-editable.js" th:src="@{/extensions/editable/bootstrap-table-editable.js}"></script>-->
+    <!--        <script src="documentation/js/table-demo.js" th:src="@{/documentation/js/table-demo.js}"></script>-->
+    <script type="text/javascript" src="assets/vendor/jquery/jquery-3.3.1.min.js"
+            th:src="@{/assets/vendor/jquery/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js"
+            th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>
+    <script type="text/javascript" src="documentation/js/admin/members.js"
+            th:src="@{/documentation/js/admin/members.js}"></script>
+</optional>
+</html>

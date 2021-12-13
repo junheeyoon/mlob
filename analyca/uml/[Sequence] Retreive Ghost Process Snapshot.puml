@@ -1,0 +1,56 @@
+@startuml
+
+header Retreive Ghost Process Snapshot
+
+actor User
+boundary WebServer
+control GhostController
+control GhostService
+entity GhostPSRepository
+
+control GhostPSCollector
+boundary Agent
+
+loop cron(0 * * * * *)
+    Agent -> GhostPSCollector : Scheduled(0 * * * * *)
+    GhostPSCollector -> GhostPSCollector : get docker ps
+    GhostPSCollector -> GhostController : send to ws://analyca/ghost/ps
+    note left
+        class GhostPSList {
+            String hostName
+            String hostIP
+            List<GhostPS> ps
+
+            class GhostPS {
+                String containerName
+                String creator
+                String cpu
+                String mem
+                String gpu
+                String createdAt
+                enum   status
+            }
+        }
+    end note
+    GhostController -> GhostService : save(ps)
+    GhostService -> GhostPSRepository : save(ps)
+end
+
+User -> WebServer : retrieve /ghost/ps
+activate WebServer
+WebServer -> GhostController : getGhostPSList()
+activate GhostController
+GhostController -> GhostService : getGhostPSList()
+activate GhostService
+GhostService -> GhostPSRepository : findAll() : List<GhostPS>
+activate GhostPSRepository
+GhostPSRepository --> GhostService : return List<GhostPS>
+deactivate GhostPSRepository
+deactivate GhostService
+GhostService --> GhostController : List<GhostPS>
+deactivate GhostController
+GhostController --> WebServer : List<GhostPS>
+deactivate WebServer
+WebServer --> User : display html
+
+@enduml

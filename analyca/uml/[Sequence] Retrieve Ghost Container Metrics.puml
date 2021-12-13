@@ -1,0 +1,49 @@
+@startuml
+
+header Retrieve Ghost Container Metrics Web Page
+
+actor User
+boundary WebServer
+database InfluxDB
+entity GhostRepostiroy
+control GhostController
+
+boundary Agent
+control GhostMetricsCollector
+
+loop cron(0 * * * * *)
+    Agent -> GhostMetricsCollector : Scheduled(0 * * * * *)
+    GhostMetricsCollector -> GhostMetricsCollector : get docker stats
+    GhostMetricsCollector -> GhostController : send to ws://analyca/ghost/stats
+    GhostController -> GhostRepostiroy : save(stats)
+    note right
+        class DockerContainerStats {
+            String hostName
+            String hostIp
+            List<DockerContainerStat> containerStats;
+
+            class DockerContainerStat {
+                String containerName
+                String containerId
+                String cpu
+                String usedMemory
+                String totalMemory
+                String usedNetIO
+                String totalNetIO
+                String usedBlockIO
+                String totalBlockIO
+            }
+        }
+    end note
+    GhostRepostiroy -> InfluxDB : save to ghost:metrics
+end
+
+User -> WebServer : click /ghost/metrics
+WebServer -> WebServer : embed grafana
+note right
+    grafana generate a graph with the
+    metrics measurement of ghost database in influxdb.
+end note
+WebServer -> User : display html
+
+@enduml

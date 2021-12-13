@@ -1,0 +1,10 @@
+spring:
+  spark:
+    home: /Users/sanghunbeak/Repository/spark-2.4.5-bin-hadoop2.7
+    masterUri: local
+    driverClassName: org.apache.hive.jdbc.HiveDriver
+    hiveUrl: jdbc:hive2://10.33.194.25:9200/default
+    hiveUser: hive
+    hivePassword: hive
+    appName: uservice
+    database: hdfs

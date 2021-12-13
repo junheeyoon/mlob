@@ -1,0 +1,26 @@
+analyca:
+  websocket:
+    ip: 10.33.176.87
+#    ip: 10.33.194.25
+    port: 4206
+    endpoint: analyca-websocket
+
+destination:
+  sendLog: /analyca/schedule/stateLog
+
+threadpool:
+  corePoolSize: 5
+  maxPoolSize: 5
+  queueCapacity: 30
+  threadNamePrefix: Executor-
+spring:
+  profiles:
+    active: prod
+
+temp:
+  path: /bigdata/scheduler
+#  path: /Users/junhee/schedule
+
+logging:
+  level:
+    root: info

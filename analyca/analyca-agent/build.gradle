@@ -1,0 +1,22 @@
+bootJar {
+    launchScript()
+}
+
+dependencies {
+    implementation project(':system:websocket-core')
+    implementation project(':system:docker-core')
+    implementation project(':service:docker-service')
+    implementation 'org.springframework:spring-messaging:5.2.3.RELEASE'
+    implementation 'org.springframework:spring-websocket:5.2.3.RELEASE'
+    implementation 'javax.websocket:javax.websocket-api:1.1'
+    implementation 'org.glassfish.tyrus.bundles:tyrus-standalone-client:1.15'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
+    implementation 'org.apache.commons:commons-text:1.8'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

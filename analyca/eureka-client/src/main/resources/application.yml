@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: eureka-client
+  datasource:
+    url: jdbc:mariadb://10.33.194.25:4306/ems
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: admin123
+    jpa:
+      open-in-view: false
+      generate-ddl: true
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+server:
+  port: 9090
+
+eureka:
+  client:
+    healthcheck: true
+    fetch-registry: true
+    service-url:
+#      defaultZone: http://10.33.194.25:4206/eureka/
+      defaultZone: http://10.244.6.132:4206/eureka/
+#      defaultZone: http://10.33.194.25:4206/eureka/
+  instance:
+    preferIpAddress: true
+#    ipAddress: 10.33.194.27
+#    ipAddress: 10.244.6.132
+    ipAddress: 172.29.235.216
+

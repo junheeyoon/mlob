@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+
+<title>SERVICE USERVICE</title>
+
+<section>
+    <div class="dashboard-wrapper">
+
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Schedule Tables</h2>
+                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit
+                            amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Schedule</a></li>
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Cron</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Schedule Tables</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+
+
+            <div class="modal fade" id="modalform">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="upload-file-form">
+                            <div class="modal-header">
+                                <h4 id="modal-title" class="modal-title">수 정</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <table class="table">
+
+                                    <tr style="display: none;">
+                                        <td>id</td>
+                                        <td id="tdId"><input class="form-control" id="id" name="id" type="text"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>이 름</td>
+                                        <td id="tdScheduleName"><input class="form-control" id="scheduleName"
+                                                                       name="scheduleName" type="text"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Host</td>
+                                        <td id="tdHost"><select class="selectpicker show-tick" id="host" name="host"
+                                                                style="width: 360px; height: 35px;">
+                                            <option value="0.0.0.0">0.0.0.0</option>
+                                        </select></td>
+                                    </tr>
+                                    <tr>
+                                        <td>설 명</td>
+                                        <td id="tdScheduleDesc"><input class="form-control" id="scheduleDesc"
+                                                                       name="scheduleDesc" type="text"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>스케줄링</td>
+                                        <td id="tdCronExpression"><input class="form-control" id="cronExpression"
+                                                                         name="cronExpression" type="text"></td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>Command</td>
+
+                                        <td id="tdCommand">
+                                            <div class="custom-file">
+                                                <input class="form-control custom-file-input" id="file" type="file"
+                                                       name="file" accept="*"/>
+                                                <label class="custom-file-label" id="fileVal" for="file">attttt</label>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td>기 간</td>
+                                        <td id="tdDt"><input class="form-control datepicker" id="dtStart" name="dtStart"
+                                                             type="text" style="width:170px; float:left">
+                                            <input class="form-control datepicker" id="dtEnd" name="dtEnd" type="text"
+                                                   style="width:170px; float:right"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Type</td>
+                                        <td id="tdType"><select class="selectpicker show-tick select-val" name="type"
+                                                                style="width: 360px; height: 35px;">
+                                            <option value="batch">batch</option>
+                                            <option value="service">service</option>
+                                        </select></td>
+                                    </tr>
+                                    <tr id="trUserId" style="display: none;">
+                                        <td>User ID</td>
+                                        <td id="tdUserId"><input class="form-control" id="userId" name="userId"
+                                                                 type="text"></td>
+                                    </tr>
+                                    <tr id="trUsed" style="display: none;">
+                                        <td>Used</td>
+                                        <td id="tdUsed"><input class="form-control" id="used" name="used" type="text">
+                                        </td>
+                                    </tr>
+
+
+                                </table>
+
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                                <button id="modalSubmit" type="button" class="btn btn-light">Commit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">
+                            Schedule Table
+                        </h5>
+                        <button class="btn btn-light create-button" style="margin: 10px 30px 0 auto">스케줄 추가</button>
+                        <div class="card-body" style="height: 632px;">
+                            <div class="table-responsive">
+                                <div id="jsGrid">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div th:replace="fragments/footer :: footer"/>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+</section>
+<optional>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jquery 3.3.1 -->
+    <script src="assets/vendor/datepicker/moment.js" th:src="@{/assets/vendor/datepicker/moment.js}"></script>
+    <script src="assets/vendor/datepicker/datepicker.js" th:src="@{/assets/vendor/datepicker/datepicker.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.js"
+            th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js"
+            th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js}"></script>
+    <link type="text/css" rel="stylesheet" href="assets/vendor/datetimepicker/jquery.datetimepicker.min.css"
+          th:href="@{/assets/vendor/datetimepicker/jquery.datetimepicker.min.css}">
+
+    <!-- bootstap bundle js -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"
+            th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <!-- slimscroll js -->
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"
+            th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+    <!-- main js -->
+    <script src="assets/libs/js/main-js.js" th:src="@{/assets/libs/js/main-js.js}"></script>
+    <!-- chart chartist js -->
+    <script src="assets/vendor/charts/chartist-bundle/chartist.min.js"
+            th:src="@{/assets/vendor/charts/chartist-bundle/chartist.min.js}"></script>
+    <!-- sparkline js -->
+    <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"
+            th:src="@{/assets/vendor/charts/sparkline/jquery.sparkline.js}"></script>
+    <!-- morris js -->
+    <script src="assets/vendor/charts/morris-bundle/raphael.min.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/raphael.min.js}"></script>
+    <script src="assets/vendor/charts/morris-bundle/morris.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/morris.js}"></script>
+    <!-- chart c3 js -->
+    <script src="assets/vendor/charts/c3charts/c3.min.js" th:src="@{/assets/vendor/charts/c3charts/c3.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"
+            th:src="@{/assets/vendor/charts/c3charts/d3-5.4.0.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/C3chartjs.js"
+            th:src="@{/assets/vendor/charts/c3charts/C3chartjs.js}"></script>
+    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js"
+            th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>
+    <script type="text/javascript" src="documentation/js/schedule/schedule.js"
+            th:src="@{/documentation/js/schedule/schedule.js}"></script>
+    <script type="text/javascript" src="documentation/js/schedule/dist/bs-custom-file-input.js"
+            th:src="@{/documentation/js/schedule/dist/bs-custom-file-input.js}"></script>
+</optional>
+</html>

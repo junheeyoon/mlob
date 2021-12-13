@@ -1,0 +1,89 @@
+@startuml
+'scale 2/3
+top to bottom direction
+
+namespace analycaAgent.agent.stomp.handler {
+    class StompServiceMessageHandler
+    class StompServiceStateHandler
+}
+
+namespace service.schedulerService.domain {
+    interface JobPublisher
+    Class JobIssued
+    Class CronJob
+    Class ServiceJob
+
+    CronJob <.. JobPublisher
+    ServiceJob <.. JobPublisher
+}
+
+namespace service.schedulerService.service {
+    interface JobSchedulerService
+    class JobSchedulerServiceImpl
+    class JobUtil
+
+    JobSchedulerServiceImpl <|.. JobSchedulerService
+    JobSchedulerServiceImpl <.. service.schedulerService.domain
+    JobSchedulerServiceImpl <.. domain.schedulerCore.service.ScheduleService
+    JobSchedulerServiceImpl <.. JobUtil
+}
+
+namespace domain.schedulerCore.repository {
+    interface AgentRepository
+    interface ScheduleLogRepository
+    interface ScheduleRepository
+    interface ScheduleRunningRepository
+}
+
+namespace domain.schedulerCore.service {
+    interface AgentService
+    interface ScheduleLogService
+    interface ScheduleService
+    interface ScheduleRunningService
+    class AgentServiceImpl
+    class ScheduleLogServiceImpl
+    class ScheduleServiceImpl
+    class ScheduleRunningServiceImpl
+
+    AgentServiceImpl <|.. AgentService
+    ScheduleLogServiceImpl <|.. ScheduleLogService
+    ScheduleServiceImpl <|.. ScheduleService
+    ScheduleRunningServiceImpl <|.. ScheduleRunningService
+
+    AgentServiceImpl <.down. domain.schedulerCore.repository.AgentRepository
+    ScheduleLogServiceImpl <.down. domain.schedulerCore.repository.ScheduleLogRepository
+    ScheduleServiceImpl <.down. domain.schedulerCore.repository.ScheduleRepository
+    ScheduleRunningServiceImpl <.down. domain.schedulerCore.repository.ScheduleRunningRepository
+}
+
+
+    namespace webServer.webserver.scheduler {
+        class TaskScheduler
+        TaskScheduler <.down. service.schedulerService.service.JobSchedulerService
+        TaskScheduler <.down. webServer.webserver.service.ScheduleRunService
+    }
+
+    namespace webServer.webserver.controller {
+        class ScheduleController
+
+        ScheduleController <.down. webServer.webserver.service.ScheduleRunService
+        ScheduleController <.down. domain.schedulerCore.service.AgentService
+    }
+
+    namespace webServer.webserver.service {
+        interface JobEventListener
+        interface ScheduleRunService
+        class JobEventListenerImpl
+        class JobPublisherEvent
+        class ScheduleRunServiceImpl
+
+        JobEventListenerImpl <|.. JobEventListener
+        JobPublisherEvent <.down. service.schedulerService.domain.JobPublisher
+        ScheduleRunServiceImpl <|.. ScheduleRunService
+        ScheduleRunServiceImpl <.down. domain.schedulerCore.service.ScheduleLogService
+        ScheduleRunServiceImpl <.down. domain.schedulerCore.service.ScheduleRunningService
+        ScheduleRunServiceImpl <.down. service.schedulerService.service.JobSchedulerService
+        ScheduleRunServiceImpl -down--- analycaAgent.agent.stomp.handler :WebSocket
+    }
+
+@enduml

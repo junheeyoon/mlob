@@ -17,7 +17,7 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
 
-    group = 'com.asianaidt.ict.analyca'
+    group = 'com.asianaidt.ict.observability'
     version = '1.0.0'
     sourceCompatibility = '1.8'
 
@@ -60,6 +60,8 @@ project(':web-server') {
 
     }
 }
+
+
 
 project(':service:mesos-service') {
     dependencies {

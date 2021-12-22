@@ -1,0 +1,95 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.5.RELEASE'
+        springGradleVersion = '1.0.9.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:${springGradleVersion}"
+    }
+}
+
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+
+    group = 'com.asianaidt.ict.observability'
+    version = '1.0.0'
+    sourceCompatibility = '1.8'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+project(':web-server') {
+    dependencies {
+        implementation project(':domain:host-domain')
+        implementation project(':domain:container-domain')
+        implementation project(':domain:security-core')
+        implementation project(':domain:scheduler-core')
+        implementation project(':domain:container-domain')
+        implementation project(':service:mesos-service')
+        implementation project(':service:security-service')
+        implementation project(':service:hadoop-service')
+        implementation project(':service:scheduler-service')
+//        implementation project(':service:spark-service')
+
+    }
+}
+
+
+
+project(':service:mesos-service') {
+    dependencies {
+        implementation project(':domain:mesos-stat-core')
+    }
+}
+
+project(':service:hadoop-service') {
+    dependencies {
+        implementation project(':domain:hadoop-core')
+    }
+}
+
+project(':service:security-service') {
+    dependencies {
+        implementation project(':domain:security-core')
+    }
+}
+
+project(':service:scheduler-service') {
+    dependencies {
+        implementation project(':domain:scheduler-core')
+        implementation project(':domain:container-domain')
+    }
+}
+
+project(':service:spark-service') {
+    dependencies {
+        implementation project(':domain:spark-domain')
+    }
+}

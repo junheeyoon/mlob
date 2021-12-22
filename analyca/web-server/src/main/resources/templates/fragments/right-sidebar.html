@@ -1,0 +1,149 @@
+<style>
+    /* The side navigation menu */
+    .sidenav {
+        height: 100%; /* 100% Full-height */
+        width: 0; /* 0 width - change this with JavaScript */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Stay on top */
+        top: 0; /* Stay at the top */
+        right: 0;
+        background-color: white;
+        overflow-x: hidden; /* Disable horizontal scroll */
+        padding-top: 60px; /* Place content 60px from the top */
+        transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    }
+
+    /* The navigation menu links */
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 12px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+    /* When you mouse over the navigation links, change their color */
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+
+    /* Position and style the close button (top right corner) */
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+    /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+    #main {
+        transition: margin-left .5s;
+        padding: 20px;
+    }
+
+    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    @media screen and (max-height: 450px) {
+        .sidenav {
+            padding-top: 15px;
+        }
+
+        .sidenav a {
+            font-size: 12px;
+        }
+    }
+</style>
+<div id="mySidenav" class="sidenav">
+    <h2 class="pageheader-title" style="position:absolute; top:25px;left:25px"><span id="container_name_hd"></span></h2>
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div class="container-fluid dashboard-content">
+        <!-- Tab 영역 START -->
+        <div class="tab-content" id="containersTab">
+            <div class="tab-pane fade show active" id="profile-simple" role="tabpanel"
+                 aria-labelledby="profile-tab-simple">
+                <div class="pills-outline">
+                    <ul class="nav nav-pills mb-1" id="container-tab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="cpu-tab-outline" data-toggle="pill" href="#cpu-outline"
+                               role="tab" aria-controls="cpu" aria-selected="true">CPU</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="mem-tab-outline" data-toggle="pill" href="#mem-outline" role="tab"
+                               aria-controls="mem" aria-selected="false">MEM</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="container-tab-content">
+                        <div class="tab-pane fade show active" id="cpu-outline" role="tabpanel"
+                             aria-labelledby="pills-home-tab-outline1">
+                            <canvas id="containerCpuChart" height="70"></canvas>
+                        </div>
+                        <div class="tab-pane fade" id="mem-outline" role="tabpanel"
+                             aria-labelledby="pills-profile-tab-outline1">
+                            <canvas id="containerMemChart" height="70"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card-body">
+                    <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                            aria-label="Stop Container" data-target="#container-modal"
+                            title="Stop Container" id="btn-stop-container">
+                        <span class="fa fa-fw fa-stop"></span>STOP
+                    </button>
+                    <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                            data-target="#container-modal" title="Start Container" id="btn-start-container">
+                        <span class="fa fa-fw fa-running"></span>START
+                    </button>
+                    <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                            data-target="#container-modal" title="Remove Container" id="btn-delete-container">
+                        <span class="far fa-trash-alt"></span>REMOVE
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <table class="table table-sm table-bordered">
+                    <tbody>
+                    <tr>
+                        <td style="background-color: #323232; color: whitesmoke">TARGET HOST</td>
+                        <td colspan="3" style="background-color: #0a0a0a"><span id="hostname" type="text" style="color:#d4d4d4"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #323232; color: whitesmoke">CREATOR</td>
+                        <td colspan="3" style="background-color: #0a0a0a"><span id="creator" type="text" style="color:#d4d4d4"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #323232; color: whitesmoke">CREATED DATE</td>
+                        <td colspan="3" style="background-color: #0a0a0a"><span id="createdDate" type="text" style="color:#d4d4d4"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #323232; color: whitesmoke">PORTS</td>
+                        <td colspan="3" style="background-color: #0a0a0a"><span id="ports" type="text" style="color:#d4d4d4"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #323232; color: whitesmoke">BINDS</td>
+                        <td colspan="3" style="background-color: #0a0a0a"><span id="bindPath" type="text" style="color:#d4d4d4"></span></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #323232; color: whitesmoke">MAX CPU</td>
+                        <td style="background-color: #0a0a0a"><span id="maxCpu" type="text" style="color:#d4d4d4">0</span></td>
+                        <td style="background-color: #323232; color: whitesmoke">MAX MEM</td>
+                        <td style="background-color: #0a0a0a"><span id="maxMem" type="text" style="color:#d4d4d4">0</span></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #323232; color: whitesmoke">IMAGE</td>
+                        <td style="background-color: #0a0a0a"><span id="imageName" type="text" style="color:#d4d4d4">telegraf_images</span></td>
+                        <td style="background-color: #323232; color: whitesmoke">TAG</td>
+                        <td style="background-color: #0a0a0a"><span id="tagVersion" type="text" style="color:#d4d4d4">latest</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

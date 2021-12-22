@@ -1,0 +1,121 @@
+<div id="deploy-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Service 배포</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                        <div class="accrodion-regular">
+                            <div id="image-accordion">
+                                <div class="card" id="image-list-card">
+                                    <div class="card-header">Image/Tags</div>
+                                    <div class="card-body" id="image-body-list-card">
+                                        <!-- 여기서 부터 rerender 로 재 사용 -->
+                                    </div>
+                                    <div class="card-header">Load</div>
+                                    <select class="form-control-sm" id="savedStack" style="height:33px;"
+                                            onchange="loadSelectedStep(this.options[this.selectedIndex])">
+                                        <option>--Select--</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+                        <form id="form" data-parsley-validate="" novalidate="">
+                            <div class="form-group row">
+                                <label for="hostNameInput" class="col-3 col-lg-2 col-form-label text-right">HOST</label>
+                                <div class="col-9 col-lg-10">
+                                    <select class="form-control" id="hostNameInput">
+                                        <option value="hosttest">0.0.0.0</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputImage" class="col-3 col-lg-2 col-form-label text-right">IMAGE</label>
+                                <div class="col-9 col-lg-10">
+                                    <div class="card-body" id="inputImage" style="background-color: lightgrey"></div>
+                                    <!--                                        <input id="inputImage" type="text" required="" placeholder="SELECT IMAGE" class="tagged form-control" data-removeBtn="true" value="PC">-->
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputContainerName"
+                                       class="col-3 col-lg-2 col-form-label text-right">Name</label>
+                                <div class="col-9 col-lg-10">
+                                    <input id="inputContainerName" type="text" required="" placeholder="container name"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputSpec" class="col-3 col-lg-2 col-form-label text-right">SPEC</label>
+                                <div class="col-4 col-lg-4">
+                                    <input id="inputSpec" type="number" required="" data-parsley-type="number"
+                                           placeholder="CPU(default:1)" class="form-control">
+                                </div>
+                                <div class="col-4 col-lg-4">
+                                    <div class="input-group">
+                                        <input id="memSpec" type="text" required="" data-parsley-type="text"
+                                               placeholder="MEM" class="form-control">
+                                        <!--                                            <div class="input-group-append be-addon">-->
+                                        <select class="form-control-sm" id="memStack" style="width:60px; height:33px;">
+                                            <option value="giga">GB</option>
+                                            <option value="mega">MB</option>
+                                        </select>
+                                        <!--                                            </div>-->
+                                    </div>
+                                </div>
+                                <div class="col-2 col-lg-2">
+                                    <input id="gpuSpec" type="text" required="" data-parsley-type="text"
+                                           placeholder="GPU" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputPortInfo"
+                                       class="col-3 col-lg-2 col-form-label text-right">PORTS</label>
+                                <div class="col-9 col-lg-10">
+                                    <input id="inputPortInfo" type="text" required="" placeholder="ports(ex: 80:9090 8080:8080)"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputVolume" class="col-3 col-lg-2 col-form-label text-right">VOLUME</label>
+                                <div class="col-9 col-lg-10">
+                                    <textarea id="inputVolume" rows="2" cols="50" placeholder="volumeinfo(ex: /var/log:/container/log /var/data/:/container/data)"
+                                              class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputVolume" class="col-3 col-lg-2 col-form-label text-right">OPTIONS</label>
+                                <div class="col-9 col-lg-10">
+                                    <textarea id="inputOptions" rows="2" cols="50" placeholder="option info(ex:--net=host --pid=host)"
+                                              class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputCommands" class="col-3 col-lg-2 col-form-label text-right">COMMAND</label>
+                                <div class="col-9 col-lg-10">
+                                    <textarea id="inputCommands" rows="2" cols="50" placeholder="command"
+                                              class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="image-save-button" disabled>SAVE SETTING</button>
+                <!--data-dismiss="modal"-->
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
+                <button type="button" class="btn btn-success" id="image-deploy-button" data-dismiss="modal" disabled>
+                    DEPLOY
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

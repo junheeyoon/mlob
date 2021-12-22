@@ -1,0 +1,46 @@
+version = '1.0.5'
+
+bootJar {
+    launchScript()
+}
+
+ext {
+    set('springCloudVersion', "Hoxton.SR1")
+}
+
+dependencies {
+    implementation project(':domain:host-domain')
+    implementation project(':service:mesos-service')
+    implementation project(':service:security-service')
+    implementation project(':service:hadoop-service')
+    implementation project(':domain:docker-domain')
+    implementation project(':domain:security-core')
+    implementation project(':domain:scheduler-core')
+    implementation project(':domain:container-domain')
+    implementation project(':system:websocket-core')
+    implementation project(':system:docker-core')
+//    implementation project(':service:spark-service')
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

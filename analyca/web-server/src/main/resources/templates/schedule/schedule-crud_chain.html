@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+
+<title>SERVICE USERVICE</title>
+
+<section>
+    <div class="dashboard-wrapper">
+
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Create Schedule</h2>
+                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit
+                            amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Schedule</a></li>
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Chain</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Create Schedule</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">
+                            Create Schedule
+                        </h5>
+                        <button class="btn btn-light create-button" style="margin: 10px 30px 0 auto">Create</button>
+                        <div class="card-body" style="height: 632px;">
+                            <div class="table-responsive">
+                                <!--<div id="jsGrid"></div>-->
+                                <div id="tableBody">
+                                    <table class=table
+                                           id="listTable"
+                                           data-header-style="headerStyle"
+                                           data-row-style="rowStyle"
+
+                                           data-id-field="id"
+                                           data-pagination="true"
+                                           data-page-size="5"
+                                    >
+                                    <!--
+                                    data-height="300"
+                                    data-page-list="[5, 10, 25, 50, 100, ALL]"
+                                    -->
+                                        <thead>
+                                        <tr>
+                                            <th data-field="id" style="display: none;">Id</th>
+                                            <th data-field="scheduleName">Schedule Name</th>
+                                            <th data-field="scheduleDesc">Description</th>
+                                            <th data-field="cronExpression">Scheduling/Next Execution</th>
+                                            <th data-field="type">Type</th>
+                                            <th data-field="sequential">Sequential/Parallel</th>
+                                            <th data-field="userId">User ID</th>
+                                            <th data-field="Status">ON/OFF</th>
+                                            <th data-field="Step">Step</th>
+                                            <th data-field="edit">Edit</th>
+                                            <th data-field="delete">Del</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div th:replace="fragments/footer :: footer"/>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+
+    <form name = "formDetail" id = "formDetail" >
+        <input type="hidden" name="ptype" id="ptype" />
+        <input type="hidden" name="scdstatus" id="scdstatus" />
+        <input type="hidden" name="sid" id="sid" />
+    </form>
+</section>
+<optional>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jquery 3.3.1 -->
+    <script src="assets/vendor/datepicker/moment.js" th:src="@{/assets/vendor/datepicker/moment.js}"></script>
+    <script src="assets/vendor/datepicker/datepicker.js" th:src="@{/assets/vendor/datepicker/datepicker.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.js"
+            th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js"
+            th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js}"></script>
+    <link type="text/css" rel="stylesheet" href="assets/vendor/datetimepicker/jquery.datetimepicker.min.css"
+          th:href="@{/assets/vendor/datetimepicker/jquery.datetimepicker.min.css}">
+
+    <!-- bootstap bundle js -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js" th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script src="assets/vendor/bootstrap-table/bootstrap-table.min.js" th:src="@{/assets/vendor/bootstrap-table/bootstrap-table.min.js}"></script>
+    <!-- slimscroll js -->
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"
+            th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+    <!-- main js -->
+    <script src="assets/libs/js/main-js.js" th:src="@{/assets/libs/js/main-js.js}"></script>
+    <!-- chart chartist js -->
+    <script src="assets/vendor/charts/chartist-bundle/chartist.min.js"
+            th:src="@{/assets/vendor/charts/chartist-bundle/chartist.min.js}"></script>
+    <!-- sparkline js -->
+    <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"
+            th:src="@{/assets/vendor/charts/sparkline/jquery.sparkline.js}"></script>
+    <!-- morris js -->
+    <script src="assets/vendor/charts/morris-bundle/raphael.min.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/raphael.min.js}"></script>
+    <script src="assets/vendor/charts/morris-bundle/morris.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/morris.js}"></script>
+    <!-- chart c3 js -->
+    <script src="assets/vendor/charts/c3charts/c3.min.js" th:src="@{/assets/vendor/charts/c3charts/c3.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"
+            th:src="@{/assets/vendor/charts/c3charts/d3-5.4.0.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/C3chartjs.js"
+            th:src="@{/assets/vendor/charts/c3charts/C3chartjs.js}"></script>
+    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js"
+            th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>
+
+    <!-- schedule task -->
+    <script type="text/javascript" src="documentation/js/schedule/schedule.js"
+            th:src="@{/documentation/js/schedule/schedule.js}"></script>
+    <script type="text/javascript" src="documentation/js/schedule/dist/bs-custom-file-input.js"
+            th:src="@{/documentation/js/schedule/dist/bs-custom-file-input.js}"></script>
+</optional>
+
+<style>
+    .stepCell {
+        padding: 0;
+    }
+</style>
+</html>

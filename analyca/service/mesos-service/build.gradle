@@ -1,0 +1,16 @@
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    implementation 'org.springframework:spring-web:5.2.3.RELEASE'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
+}
+
+test {
+    useJUnitPlatform()
+}

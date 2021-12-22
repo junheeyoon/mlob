@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+
+<title>BIGDATA USERVICE</title>
+
+<section>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-ecommerce">
+            <div class="container-fluid dashboard-content ">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title">HDFS Browser</h2>
+                            <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item active" aria-current="page">HDFS Browser</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="alert alert-danger" id="alert-panel" style="display:none">
+                    <button type="button" class="close" onclick="$('#alert-panel').hide();">&times;</button>
+                    <div class="alert-body" id="alert-panel-body"></div>
+                </div>
+
+
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- basic table  -->
+                    <!-- ============================================================== -->
+                    <div class="col-xs-10 col-md-10">
+                        <input type="text" class="form-control" id="directory" disabled="disable"/>
+                    </div>
+
+                    <div class="col-xs-2 col-md-2">
+                        <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                                aria-label="New Directory" data-target="#btn-create-directory"
+                                title="Create Directory" id="btn-create-dir">
+                            <span class="fa fa-fw fa-folder-open"></span>
+                        </button>
+                        <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                                data-target="#modal-upload-file" title="Upload Files" id="btn-upload-files">
+                            <span class="fa fa-fw fa-upload"></span>
+                        </button>
+
+                        <button type="button" class="btn btn-dark btn-sm dropdown-toggle"
+                                data-toggle="dropdown" title="Cut & Paste">
+                            <span class="fa fa-fw fa-cut"></span></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" id="explorer-cut">Cut</a>
+                            <a class="dropdown-item" id="explorer-paste">Paste</a>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div id="toolbar">
+                            <button type="button" class="btn btn-dark btn-sm" data-toggle="modal"
+                                    aria-label="New Directory" data-target="#delete-modal"
+                                    title="삭제" id="btn-delete">
+                                <span class="fa fa-fw fa-trash"></span>
+                            </button>
+                            <button type="button" class="btn btn-dark btn-sm" title="상위" id="btn-up-arrow" disabled>
+                                <span class="fa fa-fw fa-chevron-left"></span>
+                            </button>
+                        </div>
+                        <style>
+                            .table-borderless td,
+                            .table-borderless th {
+                                border: 0;
+                            }
+                        </style>
+                        <table class="table-dark table-borderless table-hover" id="table"
+                               data-toolbar="#toolbar"
+                               data-pagination="true"
+                               data-header-style="headerStyle"
+                               data-page-size="25"
+                               data-row-style="rowStyle"
+                        >
+                            <thead>
+                            <tr>
+                                <th id="checker" data-field="state" data-checkbox="true"></th>
+                                <th data-field="type" data-formatter="folderFormatter"></th>
+                                <th data-field="name"></th>
+                                <th data-field="permission"></th>
+                                <th data-field="owner"></th>
+                                <th data-field="group"></th>
+                                <th data-field="size" data-formatter="fmt_bytes"></th>
+                                <th data-field="modification_time" data-formatter="dateFormatter"></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div th:replace="fragments/footer :: footer"/>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+    <div class="modal fade" id="file-info" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="file-info-title">File information</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" id="file-info-body">
+                    <div class="panel-body">
+                        <div class="row">
+                            <span class="col-md-6">
+                                <a id="file-info-download" style="cursor:pointer">Download</a>
+                            </span>
+                            <span class="col-md-6">
+                                <a id="file-info-preview-head" style="cursor:pointer">Head the file</a>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel panel-info" id="file-info-tail" style="display:none">
+                            <div class="panel-heading">File contents</div>
+                            <div class="panel-body">
+                                <div class="input-group-sm">
+                                    <textarea class="form-control" style="height: 150px"
+                                              id="file-info-preview-body"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success"
+                            data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="delete-modal-title">Delete</h4>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">&times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="panel-body">
+                        <div id="delete-prompt"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="delete-button"
+                            data-complete-text="Deleting...">Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="btn-create-directory" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create Directory</h4>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">&times;
+                    </button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="new_directory_pwd"></span>
+                        </div>
+                        <input type="text" class="form-control" id="new_directory"
+                               placeholder="New Directory Name"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success"
+                            id="btn-create-directory-send" data-complete-text="Creating...">
+                        Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="modal-upload-file" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="file-upload-title">Upload File Path - </h4>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <form method="POST" enctype="multipart/form-data" id="fileUploadFrom">
+                    <div class="modal-body" id="file-upload-body">
+                        <input id="modal-upload-file-input" name="files" type="file" class="file" multiple>
+                        <h5>최대 업로드 크기는 1GB 입니다.</h5>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" id="modal-upload-file-button"
+                                data-complete-text="Uploading...">Upload
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalTable" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">권한 변경</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table id="permTable"
+                           data-toggle="table"
+                    >
+                        <thead>
+                        <tr>
+                            <th data-field="permUser" id="puser" data-formatter="permFormatter">User</th>
+                            <th data-field="permGroup" id="pgroup" data-formatter="permFormatter">Group</th>
+                            <th data-field="permOther" id="pother" data-formatter="permFormatter">Other</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <br/>
+                    <div>
+                        <label><input type="checkbox" id="explorer-perm-sticky"> Sticky bit</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="modal-permission-set-button" data-dismiss="modal">
+                        Set
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<optional>
+    <script type="text/javascript" src="assets/vendor/jquery/jquery-3.3.1.min.js"
+            th:src="@{/assets/vendor/jquery/jquery-3.3.1.min.js}"></script>
+    <!--    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js" th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>-->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"
+            th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script src="assets/vendor/bootstrap-table/bootstrap-table.min.js"
+            th:src="@{/assets/vendor/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" th:src="@{/hdfs/moment.min.js}"></script>
+    <script th:src="@{/documentation/js/hdfs/hdfsbrowser.js}"></script>
+</optional>
+</html>

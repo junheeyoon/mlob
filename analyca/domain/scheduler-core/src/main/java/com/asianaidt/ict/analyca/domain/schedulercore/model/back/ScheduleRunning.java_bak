@@ -1,0 +1,63 @@
+package com.asianaidt.ict.analyca.domain.schedulercore.model;
+
+import lombok.Data;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Data
+@Table(name = "schedule_running")
+@Entity
+public class ScheduleRunning {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(nullable = false)
+    private long idSchedule;
+
+    @Column(nullable = false)
+    private long pid;
+
+    @Column(length = 50, nullable = false)
+    private String userId;
+
+    @Column(length = 50, nullable = false)
+    private String hostName;
+
+    @Column(length = 50, nullable = false)
+    private String hostIp;
+
+    @Column(length = 50, nullable = false)
+    private String agent;
+
+    @Column(length = 10, nullable = false)
+    private String type;
+
+    @Column(length = 50, nullable = false)
+    private String scheduleName;
+
+    @Column(length = 500, nullable = false)
+    private String scheduleDesc;
+
+    private LocalDateTime dtCommand;
+
+    @PrePersist
+    protected void onCreate() {
+        dtCommand = LocalDateTime.now();
+    }
+
+    public enum commandStatus {
+        WAIT, // 0
+        START, // 1
+        DONE,
+        FAILED;
+    }
+
+    public interface pidGroup {
+        public String getAgent();
+
+        public String getPids();
+    }
+}

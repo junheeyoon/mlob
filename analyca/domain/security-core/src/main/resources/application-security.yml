@@ -1,0 +1,24 @@
+spring:
+  security:
+    datasource:
+      jdbc-url: 'jdbc:mariadb://10.33.194.25:4306/bdp?characterEncoding=UTF-8&serverTimezone=UTC'
+      username: platform
+      password: bigdataP1!
+  jpa:
+    hibernate:
+      ddl-auto: update
+#    show-sql: true
+    properties:
+      hibernate.format_sql: true
+  main:
+    allow-bean-definition-overriding: true
+
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#        type:
+#          descriptor:
+#            sql:
+#              BasicBinder: TRACE

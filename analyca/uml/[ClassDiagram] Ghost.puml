@@ -1,0 +1,88 @@
+@startuml
+scale 2/3
+
+namespace domain.dockerdomain {
+    namespace model {
+        class DockerStatusRead
+        class DockerStatusWrite {
+            - String containerId;
+            - String image;
+            - String port;
+            - String status;
+            - String name;
+        }
+    }
+
+    namespace service {
+        interface DockerService {
+            + void write(List<DockerStatus.Write> dockers);
+        }
+        class DockerServiceInfluxDB {
+            - InfluxDBTemplate<Point> influxDBTemplate
+            + void write(List<DockerStatus.Write> dockers);
+        }
+
+        DockerServiceInfluxDB --|> DockerService
+        DockerServiceInfluxDB --> domain.dockerdomain.model.DockerStatusWrite
+    }
+}
+
+namespace system.dockercore {
+    namespace dto {
+        class DockerMetrics {
+            - String containerId;
+            - String image;
+            - String port;
+            - String status;
+            - String name;
+        }
+        class DockerCommandStompRequest {
+            - List<String> commands;
+        }
+    }
+    namespace type {
+        class DockerCommand
+    }
+}
+
+namespace webserver {
+    namespace controller {
+        class GhostController {
+            - DockerService dockerService
+            + void updateGhostStatus(List<DockerMetrics> metricsList)
+        }
+
+        GhostController --> domain.dockerdomain.service.DockerService
+        GhostController --> domain.dockerdomain.model.DockerStatusWrite
+        GhostController --> system.dockercore.dto.DockerMetrics
+        GhostController --> system.dockercore.type.DockerCommand
+    }
+}
+
+namespace agent {
+    namespace ghost {
+        class GhostService {
+            - StompSession stompSession
+            + void execute(DockerCommandStompRequest request)
+        }
+        class GhostStateCollector {
+            - StompSession stompSession
+            + public void collectState()
+        }
+
+        GhostStateCollector --> system.dockercore.dto.DockerMetrics
+        GhostService --> system.dockercore.dto.DockerCommandStompRequest
+    }
+    namespace stomp.handler {
+        class StompGhostHandler {
+            - GhostService ghostService
+            + Type getPayloadType(StompHeaders headers)
+            + void handleFrame(StompHeaders headers, Object payload)
+        }
+
+        StompGhostHandler --> system.dockercore.dto.DockerCommandStompRequest
+        StompGhostHandler --> agent.ghost.GhostService
+    }
+}
+
+@enduml

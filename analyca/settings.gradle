@@ -1,0 +1,29 @@
+rootProject.name = 'analyca'
+
+include 'web-server',
+        'analyca-agent',
+        'eureka-client',
+        'analyca-gateway',
+        'observability'
+
+include 'service:mesos-service',
+        'service:hadoop-service',
+        'service:security-service',
+        'service:scheduler-service',
+        'service:docker-service',
+        'service:spark-service'
+
+include 'domain:security-core',
+        'domain:mesos-stat-core',
+        'domain:hadoop-core',
+        'domain:scheduler-core',
+        'domain:docker-domain',
+        'domain:host-domain',
+        'domain:container-domain',
+        'domain:spark-domain',
+        'domain:data-core'
+
+include 'system:websocket-core',
+        'system:docker-core'
+
+

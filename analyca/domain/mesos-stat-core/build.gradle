@@ -1,0 +1,13 @@
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
+    implementation 'com.github.miwurster:spring-data-influxdb:1.8'
+    implementation 'org.influxdb:influxdb-java:2.17'
+}

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+
+<title>ICT 융합연구소 Index</title>
+
+<section>
+    <div class="dashboard-wrapper">
+
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Schedule Tables</h2>
+                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit
+                            amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Schedule</a></li>
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Cron</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Schedule Tables</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+
+            <div style="float:right">
+                <button class="btn btn-light create-button" onClick="location.href='/schedule/tttt2'"
+                        style="margin: 0px 0px 10px auto">스케줄 추가
+                </button>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th style="" rowspan="" data-field="id">
+                        <div class="th-inner ">Schedule Name</div>
+                        <div class="fht-cell" style="width: 41px;"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">
+                        <div class="th-inner ">Scheduling</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">
+                        <div class="th-inner ">Description</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">
+                        <div class="th-inner ">Type</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">
+                        <div class="th-inner ">Parallel</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">
+                        <div class="th-inner ">Step</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">
+                        <div class="th-inner ">Action</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 140px; " data-field="s_PackageNo" data-not-first-th="">
+                        <div class="th-inner sortable both">1</div>
+                        <div class="fht-cell" style="width: 179px;"></div>
+                    </th>
+                    <th style="width: 130px; " data-field="s_OriginalPackageNo">
+                        <div class="th-inner sortable both">2</div>
+                        <div class="fht-cell" style="width: 128px;"></div>
+                    </th>
+                    <th style="" data-field="s_ProductName">
+                        <div class="th-inner sortable both">3</div>
+                        <div class="fht-cell" style="width: 111px;"></div>
+                    </th>
+                    <th style="" data-field="s_PackageNumber">
+                        <div class="th-inner sortable both">4</div>
+                        <div class="fht-cell" style="width: 73px;"></div>
+                    </th>
+                    <th style="" data-field="s_DateCode">
+                        <div class="th-inner sortable both">5</div>
+                        <div class="fht-cell" style="width: 72px;"></div>
+                    </th>
+                    <th style="" data-field="s_LotNo">
+                        <div class="th-inner sortable both">6</div>
+                        <div class="fht-cell" style="width: 105px;"></div>
+                    </th>
+                    <th style="" data-field="s_LotNo">
+                        <div class="th-inner sortable both">7</div>
+                        <div class="fht-cell" style="width: 105px;"></div>
+                    </th>
+
+                </tr>
+                </thead>
+            </table>
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div th:replace="fragments/footer :: footer"/>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+</section>
+<optional>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jquery 3.3.1 -->
+    <script src="assets/vendor/datepicker/moment.js" th:src="@{/assets/vendor/datepicker/moment.js}"></script>
+    <script src="assets/vendor/datepicker/datepicker.js" th:src="@{/assets/vendor/datepicker/datepicker.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.js"
+            th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js"
+            th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js}"></script>
+    <link type="text/css" rel="stylesheet" href="assets/vendor/datetimepicker/jquery.datetimepicker.min.css"
+          th:href="@{/assets/vendor/datetimepicker/jquery.datetimepicker.min.css}">
+
+    <!-- bootstap bundle js -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"
+            th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <!-- slimscroll js -->
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"
+            th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+    <!-- main js -->
+    <script src="assets/libs/js/main-js.js" th:src="@{/assets/libs/js/main-js.js}"></script>
+    <!-- chart chartist js -->
+    <script src="assets/vendor/charts/chartist-bundle/chartist.min.js"
+            th:src="@{/assets/vendor/charts/chartist-bundle/chartist.min.js}"></script>
+    <!-- sparkline js -->
+    <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"
+            th:src="@{/assets/vendor/charts/sparkline/jquery.sparkline.js}"></script>
+    <!-- morris js -->
+    <script src="assets/vendor/charts/morris-bundle/raphael.min.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/raphael.min.js}"></script>
+    <script src="assets/vendor/charts/morris-bundle/morris.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/morris.js}"></script>
+    <!-- chart c3 js -->
+    <script src="assets/vendor/charts/c3charts/c3.min.js" th:src="@{/assets/vendor/charts/c3charts/c3.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"
+            th:src="@{/assets/vendor/charts/c3charts/d3-5.4.0.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/C3chartjs.js"
+            th:src="@{/assets/vendor/charts/c3charts/C3chartjs.js}"></script>
+    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js"
+            th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>
+    <script type="text/javascript" src="documentation/js/schedule/schedule.js"
+            th:src="@{/documentation/js/schedule/ChainScheduleLog.js}"></script>
+    <script type="text/javascript" src="documentation/js/schedule/dist/bs-custom-file-input.js"
+            th:src="@{/documentation/js/schedule/dist/bs-custom-file-input.js}"></script>
+</optional>
+</html>

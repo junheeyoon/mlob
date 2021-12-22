@@ -1,0 +1,14 @@
+#spring:
+#  datasource:
+#    scheduler:
+#      jdbc-url: 'jdbc:mariadb://10.33.194.25:4306/bdp_test?characterEncoding=UTF-8&serverTimezone=UTC'
+#      username: platform
+#      password: bigdataP1!
+#  main:
+#    allow-bean-definition-overriding: true
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate.format_sql: true

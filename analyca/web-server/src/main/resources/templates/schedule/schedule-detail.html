@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+
+<title>SERVICE USERVICE</title>
+
+<section>
+    <div class="dashboard-wrapper">
+
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Schedule Detail</h2>
+                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Schedule</a></li>
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Chain</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Schedule Details</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+
+                <div class="modal fade" id="modalform">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="upload-file-form">
+                            <div class="modal-header">
+                                <h4 id="modal-title" class="modal-title">Add Step</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <table class="table">
+                                    <tr>
+                                        <td>Step Name</td>
+                                        <td id="tdStepName"><input class="form-control" id="stepName" name="stepName" type="text"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Description</td>
+                                        <td id="tdStepDesc"><input class="form-control" id="stepDesc" name="stepDesc" type="text"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Host</td>
+                                        <td id="tdHost"><select class="selectpicker show-tick" id="stepHost" name="host" style="width:100%; height: 35px;">
+                                            <!--<option value="" selected disabled hidden>&#45;&#45;Select&#45;&#45;</option>-->
+                                        </select></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Image</td>
+                                        <td id="tdImage"><select class="selectpicker show-tick" id="stepImage" name="image" style="width:100%; height: 35px;">
+                                            <!--<option value="" selected disabled hidden>&#45;&#45;Select&#45;&#45;</option>-->
+                                        </select></td>
+                                    </tr>
+
+                                </table>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                                <!--<button id="modalSubmit" type="button" class="btn btn-dark" data-dismiss="modal">Add</button>-->
+                                <button id="modalSubmit" type="button" class="btn btn-dark">Add</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">
+                            Schedule Detail
+                        </h5>
+                        <!--<div class="card-body" style="height: 632px;">-->
+                        <div class="card-body" style="height: 672px;">
+                            <div class="table-responsive">
+                                <!--<div id="jsGrid">
+                                </div>-->
+
+                                <table class="table" id="detailTable">
+                                    <tr style="display: none;">
+                                        <td>id</td>
+                                        <td id="tdId"><input class="form-control" id="id" name="id" type="text"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Schedule Name</td>
+                                        <td id="tdScheduleName"><input class="form-control" id="scheduleName" name="scheduleName" type="text"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Description</td>
+                                        <td id="tdScheduleDesc"><input class="form-control" id="scheduleDesc" name="scheduleDesc" type="text"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Scheduling</td>
+                                        <td id="tdCronExpression">
+                                            <div style="display: flex;">
+                                                <p class="colModify" style="width: 40px; float: left; margin: 5px 0; display: none;">기존 : </p>
+                                                <input class="form-control colModify review" id="cronExpression" name ="cronExpression" style="float:left; display: none;" ><!-- type="text">-->
+                                            </div>
+                                            <div class="colModify modifyChecker" style="display: none; float:left; margin-top:10px; margin-right:10px;">
+                                                <input type='checkbox' id='modifyCron' name='modifyCron' value='modifyCron'><label for="modifyCron">수정하기</label>
+                                            </div>
+                                            <div class="modifyTab" style="margin-top: 10px;">
+                                                <div style="float: left; margin-bottom: 0px; margin-top: 0px;">
+                                                    <select class="SCHEDULE_ROLL" style="width: 100px; height: 25px; margin-right: 10px; float: left;">
+                                                        <option value='D'>매일</option>
+                                                        <option value='W'>매주</option>
+                                                        <option value='M'>매월</option>
+                                                        <option value='Y'>매년</option>
+                                                        <option value='I'>간격</option>
+                                                    </select>
+                                                </div>
+                                                <div id="add_tabs"
+                                                     style="float: left; border: 0px; padding: 0px; margin-bottom: 0px; margin-top: 0px;">
+                                                    <ul style="display: none;">
+                                                        <li><a href="#add-tabs-1">매일</a></li>
+                                                        <li><a href="#add-tabs-2">매주</a></li>
+                                                        <li><a href="#add-tabs-3">매월</a></li>
+                                                        <li><a href="#add-tabs-4">매년</a></li>
+                                                        <li><a href="#add-tabs-5">간격</a></li>
+                                                    </ul>
+                                                    <div id="add-tabs-1" style="padding: 0px;"></div>
+                                                    <div id="add-tabs-2" style="padding: 0px;">
+                                                        <div class="week_ck" style="margin-right: 10px;">
+                                                            <input value="MON" name="add_week[]" type="checkbox"
+                                                                   id="checkbox-scheduler-add-mon" /> <label
+                                                                class="scheduler_ck" for="checkbox-scheduler-add-mon">월요일</label>
+                                                            <input value="TUE" name="add_week[]" type="checkbox"
+                                                                   id="checkbox-scheduler-add-tue" /> <label
+                                                                class="scheduler_ck" for="checkbox-scheduler-add-tue">화요일</label>
+                                                            <input value="WED" name="add_week[]" type="checkbox"
+                                                                   id="checkbox-scheduler-add-wed" /> <label
+                                                                class="scheduler_ck" for="checkbox-scheduler-add-wed">수요일</label>
+                                                            <input value="THU" name="add_week[]" type="checkbox"
+                                                                   id="checkbox-scheduler-add-thu" /> <label
+                                                                class="scheduler_ck" for="checkbox-scheduler-add-thu">목요일</label>
+                                                            <input value="FRI" name="add_week[]" type="checkbox"
+                                                                   id="checkbox-scheduler-add-fri" /> <label
+                                                                class="scheduler_ck" for="checkbox-scheduler-add-fri">금요일</label>
+                                                            <input value="SAT" name="add_week[]" type="checkbox"
+                                                                   id="checkbox-scheduler-add-sat" /> <label
+                                                                class="scheduler_ck" for="checkbox-scheduler-add-sat">토요일</label>
+                                                            <input value="SUN" name="add_week[]" type="checkbox"
+                                                                   id="checkbox-scheduler-add-sun" /> <label
+                                                                class="scheduler_ck" for="checkbox-scheduler-add-sun">일요일</label>
+                                                        </div>
+                                                    </div>
+                                                    <div id="add-tabs-3" style="padding: 0px;">
+                                                        <select class="M_DAY" style="width: 50px; height: 25px; margin-right: 10px; float: left;"></select>
+                                                        <p class="scheduler_p" style="height: 25px; margin-right: 10px; float: left;">일</p>
+                                                    </div>
+                                                    <div id="add-tabs-4" style="padding: 0px;">
+                                                        <select class="Y_MON" style="width: 50px; height: 25px; margin-right: 10px; float: left;"></select>
+                                                        <p class="scheduler_p" style="height: 25px; margin-right: 10px; float: left;">월</p>
+                                                        <select class="Y_DAY" style="width: 50px; height: 25px; margin-right: 10px; float: left;"></select>
+                                                        <p class="scheduler_p" style="height: 25px; margin-right: 10px; float: left;">일</p>
+                                                    </div>
+                                                    <!--<div id="add-tabs-5" style="padding: 0px;">
+                                                        <input type="text" class="O_DATEPICKER" />
+                                                    </div>-->
+                                                    <div id="add-tabs-5" style="padding: 0px;">
+                                                        <input type="number" class="I_INTERVAL_TEXT" min="1" value="1"
+                                                               style="width: 40px; height: 25px; vertical-align: baseline;" />
+                                                        <select class="I_INTERVAL_SEL"
+                                                                style="width: 100px; height: 25px;">
+                                                            <option value="S">초 마다</option>
+                                                            <option value="M">분 마다</option>
+                                                            <option value="H">시 마다</option>
+                                                            <option value="D">일 마다</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="default_date" style="float: left; margin-bottom: 0px; margin-top: 0px; display: inline-flex;">
+                                                     <!--style="float: left; border: 0px; padding: 0px;">-->
+                                                    <select class="HOUR" style="width: 50px; height: 25px; margin-right: 10px; float: left;"></select>
+                                                    <p class="scheduler_p" style="height: 25px; margin-right: 10px; margin-bottom: 0; float: left;">시</p>
+                                                    <select class="MIN" style="width: 50px; height: 25px; margin-right: 10px; float: left;"></select>
+                                                    <p class="scheduler_p" style="height: 25px; margin-right: 10px; margin-bottom: 0; float: left;">분</p>
+                                                    <select class="SEC" style="width: 50px; height: 25px; margin-right: 10px; float: left;"></select>
+                                                    <p class="scheduler_p" style="height: 25px; margin-right: 10px; margin-bottom: 0; float: left;">초</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Type</td>
+                                        <td id="tdType">
+                                            <select class="selectpicker show-tick select-val" name="type" style="width:100%; height: 35px;">
+                                                <option value="batch">Batch</option>
+                                                <!--<option value="service">Service</option>-->
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Sequential/Parallel</td>
+                                        <td id="tdParallel">
+                                            <select class="selectpicker show-tick select-val" name="type" style="width:100%; height: 35px;">
+                                                <option value="parallel">Parallel</option>
+                                                <option value="sequential">Sequential</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    <tr id ="trUserId" style="display: none;">
+                                        <td>User ID</td>
+                                        <td id="tdUserId"><input class="form-control" id="userId" name="userId" type="text"></td>
+                                    </tr>
+                                    <tr id ="trUsed" style="display: none;">
+                                        <td>Used</td>
+                                        <td id="tdUsed"><input class="form-control" id="used" name="used" type="text"></td>
+                                    </tr>
+                                    <tr id = "trDt" style="display: none;">
+                                        <td>기 간</td>
+                                        <td id="tdDt"><input class="form-control datepicker" id="dtStart" name="dtStart" type="text" style="width:170px; float:left">
+                                            <input class="form-control datepicker" id="dtEnd" name="dtEnd" type="text" style="width:170px; float:right"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Chain</td>
+                                        <td id="tdChain"><!--<input class="form-control" id="chain" name ="chain" type="text">-->
+                                            <button class="btn btn-dark step-create-button" style="margin: 10px 30px 10px auto; float:right;">Add Step</button>
+                                            <table class=table
+                                                   id="stepTable"
+                                                   data-header-style="headerStyle"
+                                                   data-row-style="rowStyle"
+                                                   data-height="300"
+                                                   fixed-table-border="none"
+                                            >
+                                                <thead>
+                                                <tr>
+                                                    <!--<th data-field="no">No</th>-->
+                                                    <th data-field="stepName">Name</th>
+                                                    <th data-field="stepDesc">Description</th>
+                                                    <th data-field="host">Host</th>
+                                                    <th data-field="image">Image</th>
+                                                    <th data-field="rowUp" class="modifyOnly">▲</th>
+                                                    <th data-field="rowDown" class="modifyOnly">▼</th>
+                                                    <th data-field="delete" class="modifyOnly">Delete</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr><td></td></tr>
+
+                                </table>
+
+                            </div>
+                        </div>
+                        <div style="align-items: center; display: flex; justify-content: flex-end;">
+                            <button class="btn btn-light cancel-button" style="margin: 10px;">Cancel</button>
+                            <button class="btn btn-dark create-button create" style="margin: 10px;">Create</button>
+                            <button class="btn btn-dark stop-button review" style="margin: 10px; display:none;">Stop/Resume</button>
+                            <button class="btn btn-dark execute-button review" style="margin: 10px; display:none">Execute</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div th:replace="fragments/footer :: footer" />
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+    <input id="ptype" style="display:none;" th:value="${ptype}" />
+    <input id="scdstatus" style="display:none;" th:value="${scdstatus}" />
+    <input id="sid" style="display:none;" th:value="${sid}" />
+</section>
+<optional>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jquery 3.3.1 -->
+    <script src="assets/vendor/datepicker/moment.js" th:src="@{/assets/vendor/datepicker/moment.js}"></script>
+    <script src="assets/vendor/datepicker/datepicker.js" th:src="@{/assets/vendor/datepicker/datepicker.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.js" th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js" th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js}"></script>
+    <link type="text/css" rel="stylesheet" href="assets/vendor/datetimepicker/jquery.datetimepicker.min.css" th:href="@{/assets/vendor/datetimepicker/jquery.datetimepicker.min.css}">
+
+    <!-- bootstap bundle js -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js" th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script src="assets/vendor/bootstrap-table/bootstrap-table.min.js" th:src="@{/assets/vendor/bootstrap-table/bootstrap-table.min.js}"></script>
+    <!-- slimscroll js -->
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js" th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+    <!-- main js -->
+    <script src="assets/libs/js/main-js.js" th:src="@{/assets/libs/js/main-js.js}"></script>
+    <!-- chart chartist js -->
+    <script src="assets/vendor/charts/chartist-bundle/chartist.min.js" th:src="@{/assets/vendor/charts/chartist-bundle/chartist.min.js}"></script>
+    <!-- sparkline js -->
+    <script src="assets/vendor/charts/sparkline/jquery.sparkline.js" th:src="@{/assets/vendor/charts/sparkline/jquery.sparkline.js}"></script>
+    <!-- morris js -->
+    <script src="assets/vendor/charts/morris-bundle/raphael.min.js" th:src="@{/assets/vendor/charts/morris-bundle/raphael.min.js}"></script>
+    <script src="assets/vendor/charts/morris-bundle/morris.js" th:src="@{/assets/vendor/charts/morris-bundle/morris.js}"></script>
+    <!-- chart c3 js -->
+    <script src="assets/vendor/charts/c3charts/c3.min.js" th:src="@{/assets/vendor/charts/c3charts/c3.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js" th:src="@{/assets/vendor/charts/c3charts/d3-5.4.0.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/C3chartjs.js" th:src="@{/assets/vendor/charts/c3charts/C3chartjs.js}"></script>
+    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js" th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>
+
+    <!-- schedule task -->
+    <script type="text/javascript" src="documentation/js/schedule/scheduledetail.js" th:src="@{/documentation/js/schedule/scheduledetail.js}"></script>
+    <script type="text/javascript" src="documentation/js/schedule/dist/bs-custom-file-input.js" th:src="@{/documentation/js/schedule/dist/bs-custom-file-input.js}"></script>
+</optional>
+</html>

@@ -1,0 +1,34 @@
+@startuml
+
+header container list 조회 프로세스
+
+actor User
+boundary WebServer
+control ghostController
+control ghostService
+entity dockerStatInfluxRepository
+database influxDB
+
+User -> WebServer : click /ghost/containers
+activate WebServer
+WebServer -> ghostController : Request metrics()
+activate ghostController
+ghostController -> ghostService : List<DockerMetrics>
+activate ghostService
+ghostService -> dockerStatInfluxRepository : findAllContainerStat() : List<DockerMetrics>
+activate dockerStatInfluxRepository
+dockerStatInfluxRepository -> influxDB : queryAction() : List<DockerMetrics>
+activate influxDB
+influxDB --> dockerStatInfluxRepository : return List<DockerMetrics>
+deactivate influxDB
+dockerStatInfluxRepository --> ghostService : return List<DockerMetrics>
+deactivate dockerStatInfluxRepository
+ghostService --> ghostController : return List<DockerMetrics>
+deactivate ghostService
+ghostController --> WebServer : return json
+deactivate ghostController
+WebServer --> User
+deactivate WebServer
+
+
+@enduml

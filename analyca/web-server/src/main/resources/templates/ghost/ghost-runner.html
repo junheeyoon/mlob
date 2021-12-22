@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+
+<title>SERVICE USERVICE</title>
+
+<section>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-ecommerce">
+            <div class="container-fluid dashboard-content ">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title">Ghost Run</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- basic table  -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                        <div class="accrodion-regular">
+                            <div id="accordion3">
+                                <div class="card" id="ghost-registory">
+                                    <button class="btn-outline-primary">Ghost List</button>
+                                    <th:block th:each="image, index : ${imagelist}">
+                                        <div class="card">
+                                            <div class="card-header" th:id="'heading'+${index.index}">
+                                                <h5 class="mb-0">
+                                                    <button class="btn btn-link collapsed" data-toggle="collapse"
+                                                            th:attr="data-target='#collapse'+${index.index}, aria-controls='collapse'+${index.index}"
+                                                            aria-expanded="false">
+                                                        <span class="fas fa-angle-down mr-3"></span><span
+                                                            th:text="${image.name}"></span>
+                                                    </button>
+                                                </h5>
+                                            </div>
+                                            <div th:id="'collapse'+${index.index}" class="collapse"
+                                                 th:attr="aria-labelledby='heading'+${index.index}"
+                                                 data-parent="#accordion3">
+                                                <div class="card-body" id="start-panel">
+                                                    <th:block th:each="tag : ${image.tags}">
+                                                        <button th:id="${image.name} + ${tag}"
+                                                                class="btn-outline-primary"
+                                                                draggable='true'
+                                                                ondragstart='onDragStart(event);'>
+                                                            <span th:text="${image.name}"></span>
+                                                            <span th:text="${tag}"></span>
+                                                        </button>
+                                                    </th:block>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                        <div class="card" id="service-zone">
+                            <h5 class="card-header"><a>Service Zone</a></h5>
+                            <!--                            <button class="btn-outline-primary">Service Zone</button>-->
+                            <div class="row">
+                                <th:block th:each="agent : ${agents}">
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-9 col-9">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <span th:text="${agent.getHostname()}"></span>
+                                                [<span th:text="${agent.getIp()}"></span>]
+                                            </div>
+                                            <div class="card-body" th:id="${agent.getIp()}"
+                                                 ondragover='onDragOver(event);' ondrop='onDrop(event);'>
+
+                                            </div>
+                                            <div class="card-footer">
+                                                <button class="btn btn-primary btn-sm" disabled>Submit</button>
+                                                <!--                                            <button class="btn btn-light btn-sm">PDF</button>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </div>
+
+                            <!--                            <div id="node_board" ondragover='onDragOver(event);' ondrop='onDrop(event);'></div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div th:replace="fragments/footer :: footer"/>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+
+
+</section>
+<optional>
+    <script type="text/javascript" src="assets/vendor/jquery/jquery-3.3.1.min.js"
+            th:src="@{/assets/vendor/jquery/jquery-3.3.1.min.js}"></script>
+    <!--    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js" th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>-->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"
+            th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script src="assets/vendor/bootstrap-table/bootstrap-table.min.js"
+            th:src="@{/assets/vendor/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"
+            th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+    <script src="assets/libs/js/main-js.js" th:src="@{/assets/libs/js/main-js.js}"></script>
+    <script th:src="@{/documentation/js/ghost/ghostrunner.js}"></script>
+    <!--    <script src="documentation/js/jquery-ui.js" th:src="@{/documentation/js/jquery-ui.js}"></script>-->
+</optional>
+</html>

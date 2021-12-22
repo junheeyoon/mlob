@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+
+<title>ICT 융합연구소 Index</title>
+
+<section>
+    <div class="dashboard-wrapper">
+
+        <div class="container-fluid dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Analysis</h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">Analysis</ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                    <div class="card">
+                        <h5 class="card-header">
+                            Schedule Running
+                        </h5>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                    <div class="card" id="service-zone">
+                        <h5 class="card-header"><a>Service Zone</a></h5>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div th:replace="fragments/footer :: footer"/>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+
+
+</section>
+<optional>
+    <script type="text/javascript" src="assets/vendor/jquery/jquery-3.3.1.min.js"
+            th:src="@{/assets/vendor/jquery/jquery-3.3.1.min.js}"></script>
+    <!--    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js" th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>-->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"
+            th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script src="assets/vendor/bootstrap-table/bootstrap-table.min.js"
+            th:src="@{/assets/vendor/bootstrap-table/bootstrap-table.min.js}"></script>
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"
+            th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+    <script src="assets/libs/js/main-js.js" th:src="@{/assets/libs/js/main-js.js}"></script>
+    <script th:src="@{/documentation/js/ghost/ghostrunner.js}"></script>
+    <!--    <script src="documentation/js/jquery-ui.js" th:src="@{/documentation/js/jquery-ui.js}"></script>-->
+</optional>
+</html>

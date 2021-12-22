@@ -1,0 +1,38 @@
+@startuml
+
+package "WebServer" {
+    HTTP - [Web]
+    [Web] - [GhostController]
+    [StompServer] - WebSocket
+    database "InMemory" {
+        frame "Repository" {
+            [ContainerPS]
+        }
+    }
+    [GhostController] -up-> [ContainerPS]
+    [GhostController] ..> WebSocket : send
+    WebSocket ..> [GhostController] : recv
+}
+
+package "Agent" {
+    [GhostCollector] --> WebSocket
+    WebSocket --> [GhostClientService]
+}
+
+database "InfluxDB" {
+    frame "Docker" {
+        [Metrics]
+    }
+}
+
+cloud "OS" {
+    [PrivateRegistry]
+    [DockerClient]
+}
+
+[GhostController] -up-> [Metrics]
+[GhostCollector] --> [PrivateRegistry]
+[GhostCollector] --> [DockerClient]
+[GhostClientService] --> [DockerClient]
+
+@enduml

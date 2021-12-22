@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+
+<title>SERVICE USERVICE</title>
+
+<section>
+    <div class="dashboard-wrapper">
+
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Schedule History</h2>
+                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit
+                            amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Schedule</a></li>
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Chain</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Schedule History</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+
+            <div class="modal fade" id="modalform">
+                <div class="modal-dialog" style="max-width: 80%">
+                    <div class="modal-content">
+                        <form id="upload-file-form">
+                            <div class="modal-header">
+                                <h4 id="modal-title" class="modal-title">수 정</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th style="text-align: center; vertical-align: middle; " colspan=""
+                                                    data-field="name">
+                                                    <div class="th-inner ">Step</div>
+                                                    <div class="fht-cell"></div>
+                                                </th>
+
+                                            </tr>
+                                            <tr style="height: 583px;" >
+                                                <th style="vertical-align: top; overflow:auto;" data-field="s_OriginalPackageNo">
+                                                    <div class="list-group" id="step-list-group" style="height: 400px;">
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th style="text-align: center; vertical-align: middle; " colspan=""
+                                                    data-field="name">
+                                                    <div class="th-inner ">Log</div>
+                                                    <div class="fht-cell"></div>
+                                                </th>
+                                            </tr>
+                                            <tr style="height: 583px">
+
+                                                <th style="vertical-align: top; padding: 10px 0px 0px 0px; overflow:auto;" data-field="s_ProductName">
+                                                    <div class="list-group" id="log-list-group" style="height: 400px;">
+                                                    </div>
+                                                </th>
+
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#stepCall">Schedule History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#stepLog">Schedule Log</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="stepCall">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="card">
+                                <!--<h5 class="card-header">
+                                    Step Call
+                                </h5>-->
+                                <div class="custom-control custom-checkbox" style="margin: 10px 0px 0px 20px">
+                                    <input type="checkbox" class="custom-control-input" onclick="checkFluency()"
+                                           id="fluency" checked/>
+                                    <label class="custom-control-label" for="fluency">All / User</label>
+                                </div>
+                                <div class="card-body" style="height: 683px;">
+                                    <div class="table-responsive">
+                                        <div id="jsGrid">
+                                        </div>
+                                    </div>
+                                    <!--                                    <table class="table table-bordered table-hover">-->
+                                    <!--                                        <thead>-->
+                                    <!--                                        <tr>-->
+                                    <!--                                            <th style="" rowspan="" data-field="id">-->
+                                    <!--                                                <div class="th-inner ">Schedule</div>-->
+                                    <!--                                                <div class="fht-cell" style="width: 41px;"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">-->
+                                    <!--                                                <div class="th-inner ">Step</div>-->
+                                    <!--                                                <div class="fht-cell"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">-->
+                                    <!--                                                <div class="th-inner ">Host</div>-->
+                                    <!--                                                <div class="fht-cell"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">-->
+                                    <!--                                                <div class="th-inner ">Start</div>-->
+                                    <!--                                                <div class="fht-cell"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">-->
+                                    <!--                                                <div class="th-inner ">End</div>-->
+                                    <!--                                                <div class="fht-cell"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">-->
+                                    <!--                                                <div class="th-inner ">Log</div>-->
+                                    <!--                                                <div class="fht-cell"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="text-align: center; vertical-align: middle; " colspan="" data-field="name">-->
+                                    <!--                                                <div class="th-inner ">Status</div>-->
+                                    <!--                                                <div class="fht-cell"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                        </tr>-->
+                                    <!--                                        <tr>-->
+                                    <!--                                            <th style="width: 140px; " data-field="s_PackageNo" data-not-first-th="">-->
+                                    <!--                                                <div class="th-inner sortable both">1</div>-->
+                                    <!--                                                <div class="fht-cell" style="width: 179px;"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="width: 130px; " data-field="s_OriginalPackageNo">-->
+                                    <!--                                                <div class="th-inner sortable both">2</div>-->
+                                    <!--                                                <div class="fht-cell" style="width: 128px;"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="" data-field="s_ProductName">-->
+                                    <!--                                                <div class="th-inner sortable both">3</div>-->
+                                    <!--                                                <div class="fht-cell" style="width: 111px;"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="" data-field="s_PackageNumber">-->
+                                    <!--                                                <div class="th-inner sortable both">4</div>-->
+                                    <!--                                                <div class="fht-cell" style="width: 73px;"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="" data-field="s_DateCode">-->
+                                    <!--                                                <div class="th-inner sortable both">5</div>-->
+                                    <!--                                                <div class="fht-cell" style="width: 72px;"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="" data-field="s_LotNo">-->
+                                    <!--                                                <div class="th-inner sortable both">6</div>-->
+                                    <!--                                                <div class="fht-cell" style="width: 105px;"></div>-->
+                                    <!--                                            </th>-->
+                                    <!--                                            <th style="" data-field="s_LotNo">-->
+                                    <!--                                                <div class="th-inner sortable both">7</div>-->
+                                    <!--                                                <div class="fht-cell" style="width: 105px;"></div>-->
+                                    <!--                                            </th>-->
+
+                                    <!--                                        </tr>-->
+                                    <!--                                        </thead>-->
+                                    <!--                                    </table>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="stepLog">
+
+                    <div class="card">
+                        <!--<h5 class="card-header">
+                            Step Log
+                        </h5>-->
+
+                        <div class="custom-control custom-checkbox" style="margin: 10px 0px 0px 20px">
+                            <input type="checkbox" class="custom-control-input" onclick="checkFluency1()"
+                                   id="fluency1" checked/>
+                            <label class="custom-control-label" for="fluency1">All / User</label>
+                        </div>
+                        <div class="card-body" style="height: 683px;">
+                            <div class="table-responsive1">
+                                <div id="jsGrid1">
+                                </div>
+                            </div>
+                        </div>
+                        <!--                            <div class="row">-->
+                        <!--                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">-->
+                        <!--                                    <table class="table table-bordered table-hover">-->
+                        <!--                                        <thead>-->
+                        <!--                                        <tr>-->
+                        <!--                                            <th style="text-align: center; width: 180px; vertical-align: middle;"-->
+                        <!--                                                rowspan="" data-field="id">-->
+                        <!--                                                <div class="th-inner ">Schedule</div>-->
+                        <!--                                                <div class="fht-cell"></div>-->
+                        <!--                                            </th>-->
+                        <!--                                            <th style="text-align: center; vertical-align: middle; " colspan=""-->
+                        <!--                                                data-field="name">-->
+                        <!--                                                <div class="th-inner ">Step</div>-->
+                        <!--                                                <div class="fht-cell"></div>-->
+                        <!--                                            </th>-->
+
+                        <!--                                        </tr>-->
+                        <!--                                        <tr style="height: 583px">-->
+                        <!--                                            <th style="vertical-align: top;" data-field="s_PackageNo"-->
+                        <!--                                                data-not-first-th="">-->
+                        <!--                                                <div class="list-group" id="image-list-group">-->
+                        <!--                                                </div>-->
+                        <!--                                            </th>-->
+                        <!--                                            <th style="vertical-align: top;" data-field="s_OriginalPackageNo">-->
+                        <!--                                                <div class="list-group" id="step-list-group">-->
+                        <!--                                                </div>-->
+                        <!--                                            </th>-->
+                        <!--                                        </tr>-->
+                        <!--                                        </thead>-->
+                        <!--                                    </table>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">-->
+                        <!--                                    <table class="table table-bordered table-hover">-->
+                        <!--                                        <thead>-->
+                        <!--                                        <tr>-->
+                        <!--                                            <th style="text-align: center; vertical-align: middle; " colspan=""-->
+                        <!--                                                data-field="name">-->
+                        <!--                                                <div class="th-inner ">Log</div>-->
+                        <!--                                                <div class="fht-cell"></div>-->
+                        <!--                                            </th>-->
+                        <!--                                        </tr>-->
+                        <!--                                        <tr style="height: 583px">-->
+
+                        <!--                                            <th style="vertical-align: top; padding: 10px 0px 0px 0px;" data-field="s_ProductName">-->
+                        <!--                                                <div class="list-group" id="log-list-group">-->
+                        <!--                                                </div>-->
+                        <!--                                            </th>-->
+
+                        <!--                                        </tr>-->
+                        <!--                                        </thead>-->
+                        <!--                                    </table>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- ============================================================== -->
+    <!-- footer -->
+    <!-- ============================================================== -->
+    <div th:replace="fragments/footer :: footer"/>
+    <!-- ============================================================== -->
+    <!-- end footer -->
+    <!-- ============================================================== -->
+    </div>
+</section>
+<optional>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jquery 3.3.1 -->
+    <script src="assets/vendor/datepicker/moment.js" th:src="@{/assets/vendor/datepicker/moment.js}"></script>
+    <script src="assets/vendor/datepicker/datepicker.js" th:src="@{/assets/vendor/datepicker/datepicker.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.js"
+            th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.js}"></script>
+    <script src="assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js"
+            th:src="@{/assets/vendor/datetimepicker/jquery.datetimepicker.full.min.js}"></script>
+    <link type="text/css" rel="stylesheet" href="assets/vendor/datetimepicker/jquery.datetimepicker.min.css"
+          th:href="@{/assets/vendor/datetimepicker/jquery.datetimepicker.min.css}">
+
+    <!-- bootstap bundle js -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"
+            th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <!-- slimscroll js -->
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"
+            th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+    <!-- main js -->
+    <script src="assets/libs/js/main-js.js" th:src="@{/assets/libs/js/main-js.js}"></script>
+    <!-- chart chartist js -->
+    <script src="assets/vendor/charts/chartist-bundle/chartist.min.js"
+            th:src="@{/assets/vendor/charts/chartist-bundle/chartist.min.js}"></script>
+    <!-- sparkline js -->
+    <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"
+            th:src="@{/assets/vendor/charts/sparkline/jquery.sparkline.js}"></script>
+    <!-- morris js -->
+    <script src="assets/vendor/charts/morris-bundle/raphael.min.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/raphael.min.js}"></script>
+    <script src="assets/vendor/charts/morris-bundle/morris.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/morris.js}"></script>
+    <!-- chart c3 js -->
+    <script src="assets/vendor/charts/c3charts/c3.min.js" th:src="@{/assets/vendor/charts/c3charts/c3.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"
+            th:src="@{/assets/vendor/charts/c3charts/d3-5.4.0.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/C3chartjs.js"
+            th:src="@{/assets/vendor/charts/c3charts/C3chartjs.js}"></script>
+    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js"
+            th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>
+    <script type="text/javascript" src="documentation/js/schedule/ChainScheduleLog.js"
+            th:src="@{/documentation/js/schedule/ChainScheduleLog.js}"></script>
+    <script type="text/javascript" src="documentation/js/schedule/dist/bs-custom-file-input.js"
+            th:src="@{/documentation/js/schedule/dist/bs-custom-file-input.js}"></script>
+</optional>
+</html>

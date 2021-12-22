@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: analyca-gateway
+
+server:
+  port: 4306
+#  port: 4206
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:4206/eureka/
+#       defaultZone: http://10.33.194.25:4206/eureka/
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 10
+zuul:
+  ribbon-isolation-strategy: thread
+  thread-pool:
+    use-separate-thread-pools: true
+
+hystrix:
+  threadpool:
+    coreSize: 150
+    maximumSize: 300
+    allowMaximumSizeToDivergeFromCoreSize: true
+
+
+ribbon:
+  SocketTimeout: 60000
+  ReadTimeout: 60000

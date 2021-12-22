@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: analyca-server
+  jpa:
+    hibernate:
+      ddl-auto: update
+      format_sql: true
+#    show-sql: true
+  profiles:
+    include:
+      - 'security'
+      - 'hadoopcore'
+      - 'mesoscore'
+      - 'hdfs'
+      - 'scheduler'
+      - 'docker'
+      - 'hostdomain'
+      - 'containerdomain'
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  thymeleaf:
+    cached: false
+  freemarker:
+    template-loader-path: classpath:/templates/
+    prefer-file-system-access: false
+    cache: false
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    org.springframework.data.influxdb: DEBUG
+server:
+  port: 4206
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    wait-time-in-ms-when-sync-empty: 0
+  dashboard:
+    path: /eureka-dashboard
+
+temp:
+  # path: /bigdata/scheduler
+  path: /user/wnda/dev
+#  path: /Users/hash1/BDP
+
+threadpool:
+  corePoolSize: 5
+  maxPoolSize: 5
+  queueCapacity: 30
+  threadNamePrefix: Executor-
+
+
+scheduler:
+  used: true
+#  used: false
+  ### used : 스케줄러를 동작시킬 서버(10.33.194.25)에서는 true, 다른 서버에서는 false로 설정

@@ -1,0 +1,65 @@
+@startuml
+'scale 2/3
+top to bottom direction
+
+namespace analycaAgent.agent {
+    namespace analycaAgent.agent.stomp.handler{
+        class StompServiceMessageHandler
+        class StompServiceStateHandler
+    }
+    namespace analycaAgent.agent.service {
+        interface MessageService
+    }
+}
+
+namespace service.schedulerService {
+    namespace service.schedulerService.domain {
+        Class CronJob
+        Class ServiceJob
+        interface JobPublisher
+    }
+    namespace service.schedulerService.service {
+        interface JobSchedulerService
+    }
+}
+
+namespace domain.schedulerCore {
+    namespace domain.schedulerCore.repository {
+        interface AgentRepository
+        interface ScheduleRepository
+        interface ScheduleLogRepository
+        interface ScheduleRunningRepository
+    }
+    namespace domain.schedulerCore.service {
+        interface AgentService
+        interface ScheduleService
+        interface ScheduleLogService
+        interface ScheduleRunningService
+    }
+
+    domain.schedulerCore.repository.AgentRepository ..|> domain.schedulerCore.service.AgentService
+    domain.schedulerCore.repository.ScheduleRepository ..|> domain.schedulerCore.service.ScheduleService
+    domain.schedulerCore.repository.ScheduleLogRepository ..|> domain.schedulerCore.service.ScheduleLogService
+    domain.schedulerCore.repository.ScheduleRunningRepository ..|> domain.schedulerCore.service.ScheduleRunningService
+}
+
+namespace webServer.webserver {
+    namespace webServer.webserver.scheduler {
+        class TaskScheduler
+    }
+
+    namespace webServer.webserver.controller {
+        class ScheduleController
+    }
+
+    namespace webServer.webserver.service {
+        interface JobEventListener
+        interface ScheduleRunService
+
+        ScheduleRunService -down- analycaAgent.agent.stomp.handler :WebSocket
+    }
+}
+
+service.schedulerService <|... webServer.webserver.service
+
+@enduml

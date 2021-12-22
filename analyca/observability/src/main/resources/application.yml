@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: observability-server
+  jpa:
+    hibernate:
+      ddl-auto: update
+      format_sql: true
+#    show-sql: true
+  profiles:
+    include:
+#      - 'datacore'
+#      - 'security'
+
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    org.springframework.data.influxdb: DEBUG
+server:
+  port: 4206

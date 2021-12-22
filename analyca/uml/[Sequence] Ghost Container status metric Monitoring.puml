@@ -1,0 +1,52 @@
+@startuml
+
+header container metrics 정보 조회 프로세스
+
+actor User
+boundary WebServer
+control ghostController
+control ghostService
+entity dockerStatInfluxRepository
+database influxDB
+
+User -> WebServer : click /ghost/containers
+activate WebServer
+WebServer -> ghostController : Request metrics()
+activate ghostController
+ghostController -> ghostService : List<DockerMetrics>
+activate ghostService
+ghostService -> dockerStatInfluxRepository : findAllContainerStat() : List<DockerMetrics>
+activate dockerStatInfluxRepository
+dockerStatInfluxRepository -> influxDB : queryAction() : List<DockerMetrics>
+activate influxDB
+influxDB --> dockerStatInfluxRepository : return List<DockerMetrics>
+deactivate influxDB
+dockerStatInfluxRepository --> ghostService : return List<DockerMetrics>
+deactivate dockerStatInfluxRepository
+ghostService --> ghostController : return List<DockerMetrics>
+deactivate ghostService
+ghostController --> WebServer : return json
+deactivate ghostController
+WebServer --> User : container List with info
+deactivate WebServer
+User -> WebServer : click container in list
+activate WebServer
+WebServer -> ghostController : Request CPU,MEM metrics(containerName)
+activate ghostController
+ghostController -> ghostService : List<DockerMetrics>
+activate ghostService
+ghostService -> dockerStatInfluxRepository : List<DockerMetrics> getMetricsContainer(CPU,MEM)
+activate dockerStatInfluxRepository
+dockerStatInfluxRepository -> influxDB :queryAction() : List<DockerMetrics>
+activate influxDB
+influxDB --> dockerStatInfluxRepository : return List<DockerMetrics>
+deactivate influxDB
+dockerStatInfluxRepository --> ghostService : return List<DockerMetrics>
+deactivate dockerStatInfluxRepository
+ghostService --> ghostController : return List<DockerMetrics>
+deactivate ghostService
+ghostController --> WebServer : return json
+deactivate ghostController
+WebServer --> User : container metrics info
+
+@enduml

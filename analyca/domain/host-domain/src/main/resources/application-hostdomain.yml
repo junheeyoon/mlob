@@ -1,0 +1,7 @@
+spring:
+  host-influxdb:
+    url: http://10.33.194.25:4006
+    username: admin
+    password: admin123
+    database: telegraf
+    retention-policy: autogen

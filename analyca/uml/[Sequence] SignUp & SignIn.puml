@@ -1,0 +1,22 @@
+@startuml
+
+header 회원가입 및 로그인 페이지
+
+actor User
+participant Web
+participant Security
+database MariaDB
+
+User -> Web : 회원가입
+Web -> Security : 회원정보(Principal) 전달
+Security -> MariaDB : 회원정보 조회
+MariaDB -> Security : 회원정보 전달
+Security -> Web : 회원가입 승인 여부(Role : USER)
+Web -> User : 회원가입 완료
+User -> Web : 로그인
+Web -> Security : 로그인(Principal) 정보 전달
+Security -> MariaDB : 로그인 정보 조회
+MariaDB -> Security : 회원정보 전달
+Security -> Web : 로그인 승인 여부
+Web -> User : 인덱스 페이지 표출
+@enduml

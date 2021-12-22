@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="fragments/layout :: layout(~{::title}, ~{::section}, ~{::optional})">
+
+<title>SERVICE USERVICE</title>
+
+<section>
+    <div class="dashboard-wrapper">
+
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">Schedule Monitoring</h2>
+                        <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit
+                            amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Schedule</a></li>
+                                    <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Chain</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Schedule Monitoring</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">
+                            Schedule Monitoring
+                        </h5>
+                        <div class="custom-control custom-checkbox" style="margin: 10px 0px 0px 20px">
+                            <input type="checkbox" class="custom-control-input" onclick="checkFluency()"
+                                   id="fluency" checked/>
+                            <label class="custom-control-label" for="fluency">All / User</label>
+                        </div>
+                        <div class="card-body" style="min-height: 683px;">
+                            <div class="table-responsive">
+                                <!--<div id="jsGrid"></div>-->
+                                <div id="tableBody">
+                                    <table class="table table-bordered"
+                                           id="listTable"
+                                           data-header-style="headerStyle"
+                                           data-row-style="rowStyle"
+
+                                           data-id-field="idSchedule"
+                                           data-pagination="true"
+                                           data-page-size="5"
+                                    >
+
+                                        <thead>
+                                        <tr>
+                                            <th rowspan="" data-field="idSchedule" style="display: none;">Id</th>
+                                            <th style="text-align: center; vertical-align: middle; width: 20%;" colspan="" data-field="dtCommand">Start Time</th>
+                                            <th style="text-align: center; width: 15%;" rowspan="" data-field="scheduleName">Schedule Name</th>
+                                            <th style="text-align: center; vertical-align: middle; width: 20%;" colspan="" data-field="scheduleDesc">Description</th>
+                                            <th style="text-align: center; vertical-align: middle; width: 10%;" colspan="" data-field="type">Type</th>
+                                            <th style="text-align: center; vertical-align: middle; width: 15%;" colspan="" data-field="parallel">Sequential/Parallel</th>
+                                            <th style="text-align: center; vertical-align: middle; width: 10%;" colspan="" data-field="step">Step</th>
+                                            <th style="text-align: center; vertical-align: middle; width: 10%;" colspan="" data-field="status">Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="runningScheduleList">
+                                        <tr>
+
+                                        </tr>
+
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+        <div th:replace="fragments/footer :: footer"/>
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+</section>
+<optional>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jquery 3.3.1 -->
+    <script src="assets/vendor/datepicker/moment.js" th:src="@{/assets/vendor/datepicker/moment.js}"></script>
+    <script src="assets/vendor/datepicker/datepicker.js" th:src="@{/assets/vendor/datepicker/datepicker.js}"></script>
+
+    <!-- bootstap bundle js -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"
+            th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <script src="assets/vendor/bootstrap-table/bootstrap-table.min.js" th:src="@{/assets/vendor/bootstrap-table/bootstrap-table.min.js}"></script>
+    <!-- slimscroll js -->
+    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"
+            th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+    <!-- main js -->
+    <script src="assets/libs/js/main-js.js" th:src="@{/assets/libs/js/main-js.js}"></script>
+    <!-- chart chartist js -->
+    <script src="assets/vendor/charts/chartist-bundle/chartist.min.js"
+            th:src="@{/assets/vendor/charts/chartist-bundle/chartist.min.js}"></script>
+    <!-- sparkline js -->
+    <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"
+            th:src="@{/assets/vendor/charts/sparkline/jquery.sparkline.js}"></script>
+    <!-- morris js -->
+    <script src="assets/vendor/charts/morris-bundle/raphael.min.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/raphael.min.js}"></script>
+    <script src="assets/vendor/charts/morris-bundle/morris.js"
+            th:src="@{/assets/vendor/charts/morris-bundle/morris.js}"></script>
+    <!-- chart c3 js -->
+    <script src="assets/vendor/charts/c3charts/c3.min.js" th:src="@{/assets/vendor/charts/c3charts/c3.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"
+            th:src="@{/assets/vendor/charts/c3charts/d3-5.4.0.min.js}"></script>
+    <script src="assets/vendor/charts/c3charts/C3chartjs.js"
+            th:src="@{/assets/vendor/charts/c3charts/C3chartjs.js}"></script>
+    <script type="text/javascript" src="documentation/js/schedule/ChainScheduleRunning.js"
+            th:src="@{/documentation/js/schedule/ChainScheduleRunning.js}"></script>
+    <script type="text/javascript" src="assets/vendor/jsgrid/jsgrid.min.js"
+            th:src="@{/assets/vendor/jsgrid/jsgrid.min.js}"></script>
+</optional>
+</html>

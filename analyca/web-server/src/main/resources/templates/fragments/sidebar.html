@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div class="nav-left-sidebar sidebar-dark" th:fragment="sidebar">
+        <nav class="navbar navbar-expand-md">
+            <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav flex-column">
+                    <li class="nav-divider">
+                        Menu
+                    </li>
+
+                    <!--li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#node-manager" aria-controls="node-manager"><i class="fa fa-fw fa-chart-line"></i>Monitor</a>
+                        <div id="node-manager" class="collapse submenu" style="">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/host/monitor" th:href="@{/host/monitor}">Node Monitor <span class="badge badge-secondary">New</span></a>
+                                </li>
+                              <li class="nav-item">
+                                    <a class="nav-link" href="/hdfs/monitor" th:href="@{/hdfs/monitor}">HDFS Monitor <span class="badge badge-secondary">New</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/hdfs/monitor-datanodes" th:href="@{/hdfs/monitor-datanodes}">HDFS DataNodes Monitor <span class="badge badge-secondary">New</span></a>
+                               </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/mesos/monitor" th:href="@{/mesos/monitor}">Mesos Monitor</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/docker/monitoring" th:href="@{/docker/monitoring}">Docker Monitoring</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li -->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="/hdfs/filebrowser" th:href="@{/hdfs/filebrowser}" aria-expanded="false"><i class="fa fa-fw fa-folder"></i>HDFS Browser</a>-->
+<!--                    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#docker-menu" aria-controls="schedule-menu"><i class="fab fa-docker"></i>Container</a>
+                        <div id="docker-menu" class="collapse submenu" style="">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/ghost/runnerview" th:href="@{/ghost/runnerview}">Create Container</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/ghost/containers" th:href="@{/ghost/containers}">List Container</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" href="/analysis/main" th:href="@{/analysis/main}" aria-expanded="false"><i class="fas fa-fw fa-chart-pie"></i>Analysis</a>-->
+<!--                    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#schedule-menu" aria-controls="schedule-menu"><i class="fas fa-fw fa-calendar-alt"></i>Scheduler</a>
+                        <div id="schedule-menu" class="collapse submenu" style="">
+                            <ul class="nav flex-column">
+                                <!--
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#cron-menu" aria-controls="cron-menu">Cron</a>
+                                    <div id="cron-menu" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/schedule/crud" th:href="@{/schedule/crud}">Schedule Tables</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/scheduleLog/list" th:href="@{/scheduleLog/list}">Schedule History</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/scheduleRunning/list" th:href="@{/scheduleRunning/list}">Schedule Running</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                -->
+<!--                                <li class="nav-item">-->
+<!--                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#chain-menu" aria-controls="chain-menu">Chain</a>-->
+<!--                                    <div id="chain-menu" class="collapse submenu" style="">-->
+<!--                                        <ul class="nav flex-column">-->
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/schedule/crud" th:href="@{/schedule/crud}">Create Schedule</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/ChainScheduleRunning/running" th:href="@{/ChainScheduleRunning/running}">Schedule Monitor</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="/ChainScheduleLog/history" th:href="@{/ChainScheduleLog/history}">Schedule History</a>
+                                            </li>
+<!--                                        </ul>-->
+<!--                                    </div>-->
+<!--                                </li>-->
+                            </ul>
+                        </div>
+                    </li>
+
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <!--                        <a class="nav-link" href="/admin" th:href="@{/admin}">Admin Page</a>-->
+                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#admin-menu"
+                       aria-controls="admin-menu"><i class="fas fa-fw fa-user-secret"></i>Admin</a>
+                    <div id="admin-menu" class="collapse submenu" style="">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/members" th:href="@{/admin/members}">User
+                                    Information</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mesos/monitor" th:href="@{/mesos/monitor}">Data Tables</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+</html>
